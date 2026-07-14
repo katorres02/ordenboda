@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Carlos &amp; Camila · Boda — Longueuil</title>
+<title>Camila &amp; Carlos · Wedding — Longueuil</title>
 <style>
   :root{
     --cream:#faf6ef;
@@ -330,12 +330,40 @@
   .iso-wrap svg{display:block;margin:0 auto;max-width:1000px;width:100%;height:auto}
   .iso-hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:12px}
 
+  /* ---------- Search & auth ---------- */
+  .searchbar{display:flex;justify-content:center;margin:12px 0 2px}
+  .searchbar input{
+    width:min(420px,100%);padding:10px 18px;border-radius:999px;border:1px solid var(--line);
+    background:var(--paper);font-size:14px;font-family:inherit;color:var(--ink);
+    box-shadow:var(--shadow-sm);outline:none;transition:.15s;
+  }
+  .searchbar input:focus{border-color:#93c572;box-shadow:0 0 0 3px rgba(147,197,114,.28)}
+  .viewnote{text-align:center;color:var(--muted);font-size:12.5px;margin:8px 0 0}
+  .seat.hit{border-style:solid;border-color:#79ad57;background:#e7f2d8;box-shadow:0 0 0 3px rgba(147,197,114,.42)}
+  .chip.hit{border-color:#79ad57;background:#e7f2d8}
+  .a-couple{margin-top:7px;font-size:13px;font-weight:600;color:var(--gold-deep)}
+
   .view{display:none}
   .view.active{display:block}
 
-  @media (max-width:560px){
-    .seat{width:96px;font-size:12px}
-    .u-grid{column-gap:6px}
+  @media (max-width:620px){
+    header.site{padding:22px 12px 6px}
+    .wrap{padding:0 10px 40px}
+    .tabs{width:100%;overflow-x:auto}
+    .tab{padding:8px 13px;font-size:13.5px}
+    .btn{font-size:12px;padding:8px 10px}
+    .stage{padding:16px 8px 22px;border-radius:14px}
+    .seat{width:78px;min-height:40px;font-size:11px;border-radius:9px}
+    .seat .num{width:16px;height:16px;font-size:9.5px;top:-6px;left:-6px}
+    .u-grid{grid-template-columns:auto 12px minmax(24px,1fr) 12px auto;column-gap:5px}
+    .arm{gap:7px}
+    .seat-grid{gap:7px}
+    .aisle{width:22px;margin:0 2px}
+    .chip{padding:6px 10px;font-size:12px}
+    .pool-card{padding:12px 10px}
+    .yard-hero{padding:18px 6px 20px;border-radius:16px}
+    .map-legend{gap:10px;font-size:12px}
+    .yh-sub{font-size:12px}
   }
 
   /* Print */
@@ -352,25 +380,26 @@
 <body>
 
 <header class="site">
-  <p class="kicker">Longueuil · Montréal</p>
-  <h1 class="serif">Carlos <span class="amp">&amp;</span> Camila</h1>
-  <p class="sub">Distribución de invitados · ceremonia y cena</p>
+  <p class="kicker">1445 Bd Roberval E, Longueuil</p>
+  <h1 class="serif">Camila <span class="amp">&amp;</span> Carlos</h1>
+  <p class="sub">Guest seating · ceremony &amp; dinner</p>
   <div class="rule"></div>
 </header>
 
 <div class="wrap">
 
   <div class="tabs no-print" id="tabs">
-    <button class="tab active" data-view="lugar">Lugar</button>
-    <button class="tab" data-view="ceremonia">Ceremonia <span class="n" id="tabc"></span></button>
-    <button class="tab" data-view="cena">Cena <span class="n" id="tabd"></span></button>
+    <button class="tab active" data-view="lugar">Venue</button>
+    <button class="tab" data-view="ceremonia">Ceremony <span class="n" id="tabc"></span></button>
+    <button class="tab" data-view="cena">Dinner <span class="n" id="tabd"></span></button>
   </div>
 
   <div class="toolbar no-print">
-    <button class="btn" id="btnPanel">⚙︎ Ajustar distribución</button>
-    <button class="btn" id="btnAdd">＋ Añadir invitado</button>
-    <button class="btn" id="btnPrint">🖨 Imprimir / PDF</button>
-    <button class="btn danger" id="btnReset">↺ Reiniciar</button>
+    <button class="btn" id="btnAuth">🔒 Sign in to edit</button>
+    <button class="btn" id="btnPanel">⚙︎ Adjust layout</button>
+    <button class="btn" id="btnAdd">＋ Add guest</button>
+    <button class="btn" id="btnPrint">🖨 Print / PDF</button>
+    <button class="btn danger" id="btnReset">↺ Reset</button>
   </div>
 
   <!-- adjust panel -->
@@ -378,15 +407,21 @@
 
   <!-- selection banner -->
   <div class="selbar no-print" id="selbar">
-    <span>Colocando a <b id="selName"></b> — toca un asiento para sentarle.</span>
-    <button id="selCancel">Cancelar</button>
+    <span>Seating <b id="selName"></b> — tap a seat to place them.</span>
+    <button id="selCancel">Cancel</button>
   </div>
+
+  <!-- search + view-only note -->
+  <div class="searchbar no-print" id="searchBar" style="display:none">
+    <input type="search" id="seatSearch" placeholder="🔍 Find a guest…" autocomplete="off" />
+  </div>
+  <div class="viewnote no-print" id="viewNote" style="display:none">👀 View-only mode — sign in to edit the seating.</div>
 
   <!-- pool -->
   <div class="pool-card no-print" id="poolCard">
     <div class="pool-head">
-      <h2 class="serif">Sin asignar <span id="poolTitleView" style="color:var(--muted);font-weight:400;font-size:14px"></span></h2>
-      <span class="hint">Toca un invitado y luego un asiento · o arrastra</span>
+      <h2 class="serif">Unassigned <span id="poolTitleView" style="color:var(--muted);font-weight:400;font-size:14px"></span></h2>
+      <span class="hint">Tap a guest, then a seat · or drag &amp; drop</span>
     </div>
     <div class="pool" id="pool"></div>
   </div>
@@ -395,22 +430,22 @@
   <section class="view active" id="view-lugar">
     <div class="yard-hero">
       <div class="yard-head">
-        <div class="yh-k">Longueuil · Montréal</div>
-        <div class="yh-t serif">El patio de la casa</div>
-        <div class="yh-sub">Recreación 3D del montaje — pasa el cursor sobre una silla para ver quién se sienta ahí</div>
+        <div class="yh-k">1445 Bd Roberval E, Longueuil</div>
+        <div class="yh-t serif">The backyard</div>
+        <div class="yh-sub">3D recreation of the setup — hover over a chair to see who sits there</div>
       </div>
       <div class="yard-segwrap no-print">
         <div class="seg" data-seg="lugar">
-          <button data-mode="ceremonia" class="on">💒 Ceremonia</button>
-          <button data-mode="cena">🍽 Cena</button>
+          <button data-mode="ceremonia" class="on">💒 Ceremony</button>
+          <button data-mode="cena">🍽 Dinner</button>
         </div>
       </div>
       <div id="yardScene"></div>
       <div class="map-legend no-print">
-        <span class="lg"><span class="sw" style="border-color:#cf5230;background:rgba(207,82,48,.14)"></span> Carpa de los novios — ceremonia</span>
-        <span class="lg"><span class="sw" style="border-color:#d99a1f;background:rgba(217,154,31,.14)"></span> Mesa en U — cena</span>
+        <span class="lg"><span class="sw" style="border-color:#cf5230;background:rgba(207,82,48,.14)"></span> Couple's canopy — ceremony</span>
+        <span class="lg"><span class="sw" style="border-color:#d99a1f;background:rgba(217,154,31,.14)"></span> U-shaped table — dinner</span>
       </div>
-      <p class="map-note no-print">Toca la etiqueta de una zona para editar su distribución. Las sillas se mueven entre ceremonia y cena porque el espacio es reducido.</p>
+      <p class="map-note no-print">Tap a zone label to edit its seating. Chairs move between ceremony and dinner since space is limited.</p>
     </div>
   </section>
 
@@ -419,14 +454,15 @@
     <div class="stage">
       <div class="stage-tools no-print">
         <div class="seg" data-seg="ceremonia">
-          <button data-mode="2d" class="on">Plano</button>
-          <button data-mode="3d">Vista 3D</button>
+          <button data-mode="2d" class="on">Floor plan</button>
+          <button data-mode="3d">3D view</button>
         </div>
       </div>
       <div id="cerFlat">
         <div class="altar">
-          <div class="a-k">Frente</div>
+          <div class="a-k">Front</div>
           <div class="a-t serif">Altar</div>
+          <div class="a-couple">👰 Camila &amp; Carlos 🤵</div>
         </div>
         <div class="cer-wrap" id="cerWrap"></div>
       </div>
@@ -439,12 +475,12 @@
     <div class="stage">
       <div class="stage-tools no-print">
         <div class="seg" data-seg="cena">
-          <button data-mode="2d" class="on">Plano</button>
-          <button data-mode="3d">Vista 3D</button>
+          <button data-mode="2d" class="on">Floor plan</button>
+          <button data-mode="3d">3D view</button>
         </div>
       </div>
       <div id="cenaFlat">
-        <div class="stage-title">Mesa en U</div>
+        <div class="stage-title">U-shaped table</div>
         <div class="u-grid" id="uGrid"></div>
       </div>
       <div class="iso-wrap" id="cenaIso" style="display:none"></div>
@@ -455,7 +491,7 @@
 
 <footer class="site">
   <div class="rule"></div>
-  <div>Los cambios se guardan automáticamente en este dispositivo.</div>
+  <div>Changes save on this device · Only the signed-in editor can modify the seating.</div>
 </footer>
 
 <script>
@@ -523,6 +559,11 @@ function defaultState(){
 /*  Estado + persistencia                                             */
 /* ------------------------------------------------------------------ */
 const KEY="ordenboda-v1";
+const AUTH_KEY="ordenboda-editor";
+const EDITOR_PIN="1445"; // <-- change this PIN to your own
+function isEditor(){ return localStorage.getItem(AUTH_KEY)==="yes"; }
+function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+let searchQ="";
 let state = load();
 
 function load(){
@@ -581,10 +622,12 @@ function unassignedGuests(view){
 /*  Lógica de colocación                                              */
 /* ------------------------------------------------------------------ */
 function selectGuest(gid){
+  if(!isEditor())return;
   state.selected = (state.selected===gid) ? null : gid;
   render();
 }
 function seatClick(view,seatId){
+  if(!isEditor())return;
   const a=validAssign(view);
   const occ=a[seatId]||null;
   if(state.selected){
@@ -602,6 +645,7 @@ function seatClick(view,seatId){
   save(); render();
 }
 function dropGuestOnSeat(view,seatId,gid){
+  if(!isEditor())return;
   const a=validAssign(view);
   if(a[seatId]===gid) return;
   const prev=seatOfGuest(view,gid);
@@ -611,6 +655,7 @@ function dropGuestOnSeat(view,seatId,gid){
   save(); render();
 }
 function unassign(view,gid){
+  if(!isEditor())return;
   const a=validAssign(view);
   const s=seatOfGuest(view,gid);
   if(s) delete a[s];
@@ -625,13 +670,14 @@ const el=id=>document.getElementById(id);
 function makeChip(g,ctx){
   const c=document.createElement("div");
   c.className="chip"+(state.selected===g.id?" selected":"");
-  c.draggable=true;
+  c.draggable=isEditor();
   c.dataset.gid=g.id;
   c.innerHTML='<span class="dot"></span><span class="nm"></span>';
   c.querySelector(".nm").textContent=g.name;
-  if(ctx==="pool"){
+  if(searchQ && norm(g.name).includes(searchQ)) c.classList.add("hit");
+  if(ctx==="pool" && isEditor()){
     const x=document.createElement("span");
-    x.className="x";x.textContent="×";x.title="Eliminar de la lista";
+    x.className="x";x.textContent="×";x.title="Remove from guest list";
     x.addEventListener("click",ev=>{ev.stopPropagation();removeGuest(g.id);});
     c.appendChild(x);
   }
@@ -647,6 +693,7 @@ function makeSeat(view,seatId,num){
   s.className="seat "+(gid?"filled":"empty");
   s.dataset.seat=seatId;
   if(state.selected && state.selected===gid) s.classList.add("target");
+  if(searchQ && gid){ const gg=guestById(gid); if(gg && norm(gg.name).includes(searchQ)) s.classList.add("hit"); }
 
   if(num){ const n=document.createElement("span");n.className="num";n.textContent=num;s.appendChild(n); }
 
@@ -673,12 +720,12 @@ function renderPool(){
   const list=unassignedGuests(view);
   if(list.length===0){
     const e=document.createElement("div");
-    e.className="empty-note";e.textContent="Todos los invitados están asignados ✓";
+    e.className="empty-note";e.textContent="All guests are seated ✓";
     pool.appendChild(e);
   }else{
     list.forEach(g=>pool.appendChild(makeChip(g,"pool")));
   }
-  el("poolTitleView").textContent = "· "+(view==="cena"?"Cena":"Ceremonia");
+  el("poolTitleView").textContent = "· "+(view==="cena"?"Dinner":"Ceremony");
 }
 
 function renderCeremonia(){
@@ -692,7 +739,7 @@ function renderCeremonia(){
 
   const secL=document.createElement("div");
   secL.className="section";
-  secL.innerHTML='<div class="s-label">Sección izquierda</div>';
+  secL.innerHTML='<div class="s-label">Left section</div>';
   const gL=document.createElement("div");
   gL.className="seat-grid";
   gL.style.gridTemplateColumns="repeat("+L.leftCols+",auto)";
@@ -701,11 +748,11 @@ function renderCeremonia(){
 
   const aisle=document.createElement("div");
   aisle.className="aisle";
-  aisle.innerHTML='<span class="a-word">Pasillo</span>';
+  aisle.innerHTML='<span class="a-word">Aisle</span>';
 
   const secR=document.createElement("div");
   secR.className="section";
-  secR.innerHTML='<div class="s-label">Sección derecha</div>';
+  secR.innerHTML='<div class="s-label">Right section</div>';
   const gR=document.createElement("div");
   gR.className="seat-grid";
   gR.style.gridTemplateColumns="repeat("+L.rightCols+",auto)";
@@ -735,10 +782,10 @@ function renderCena(){
   const barL=document.createElement("div");barL.className="bar bar-left";
   const barR=document.createElement("div");barR.className="bar bar-right";
   const barB=document.createElement("div");barB.className="bar bar-bottom";
-  const lab=document.createElement("div");lab.className="u-label";lab.textContent="Pista / centro";
+  const lab=document.createElement("div");lab.className="u-label";lab.textContent="Dance floor";
 
   const head=document.createElement("div");head.className="head";
-  const hl=document.createElement("div");hl.className="headline";hl.textContent="Mesa principal";
+  const hl=document.createElement("div");hl.className="headline";hl.textContent="Main table";
   head.appendChild(hl);
   for(let i=0;i<L.head;i++) head.appendChild(makeSeat("cena","d-head-"+i));
 
@@ -836,7 +883,11 @@ function iso3D(view){
     let posts="";
     px.forEach(p=>{posts+=box(p[0]-0.06,p[1]-0.06,p[0]+0.06,p[1]+0.06,0,150,{t:"#e7ddca",r:"#c7bda6",l:"#d7ccb6"});});
     const roof=box(cxm-1.5,fy-1.0,cxm+1.5,fy+1.0,150,160,{t:"rgba(219,90,60,.55)",r:"rgba(180,70,45,.55)",l:"rgba(200,80,52,.55)"});
-    canopy={posts,roof};
+    // the couple in front of the altar (facing the guests)
+    const bpt=track(P(cxm-0.42,fy+1.15,0)), gpt=track(P(cxm+0.42,fy+1.15,0));
+    let cp='<g><title>Camila</title><path d="M'+(bpt[0]-8.5).toFixed(1)+' '+bpt[1].toFixed(1)+' L'+(bpt[0]+8.5).toFixed(1)+' '+bpt[1].toFixed(1)+' L'+(bpt[0]+3).toFixed(1)+' '+(bpt[1]-23).toFixed(1)+' L'+(bpt[0]-3).toFixed(1)+' '+(bpt[1]-23).toFixed(1)+' Z" fill="#ffffff" stroke="#e8ddc5" stroke-width="1"/><circle cx="'+bpt[0].toFixed(1)+'" cy="'+(bpt[1]-29).toFixed(1)+'" r="6" fill="#e8bb90"/></g>';
+    cp+='<g><title>Carlos</title><rect x="'+(gpt[0]-6).toFixed(1)+'" y="'+(gpt[1]-29).toFixed(1)+'" width="12" height="23" rx="4" fill="#3c414d"/><circle cx="'+gpt[0].toFixed(1)+'" cy="'+(gpt[1]-35).toFixed(1)+'" r="6" fill="#e2b08a"/></g>';
+    canopy={posts,roof,couple:cp};
   }
 
   // ---- pintar (algoritmo del pintor: de atrás hacia adelante) ----
@@ -862,7 +913,7 @@ function iso3D(view){
       if(g) labels.push({d:it.depth, svg:label(it.s.cx,it.s.cy,g.name)});
     }
   });
-  if(canopy){ svg+=canopy.posts; }
+  if(canopy){ svg+=canopy.posts; if(canopy.couple) svg+=canopy.couple; }
   // etiquetas al final (encima de todo), ordenadas por profundidad
   labels.sort((p,q)=>p.d-q.d).forEach(l=>svg+=l.svg);
   if(canopy){ svg+=canopy.roof; }
@@ -873,9 +924,9 @@ function iso3D(view){
   pts.forEach(p=>{minX=Math.min(minX,p[0]);minY=Math.min(minY,p[1]);maxX=Math.max(maxX,p[0]);maxY=Math.max(maxY,p[1]);});
   const dx=(-minX+pad).toFixed(1), dy=(-minY+pad).toFixed(1);
   const W=(maxX-minX+pad*2).toFixed(1), H=(maxY-minY+pad*2).toFixed(1);
-  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Vista 3D">'
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="3D view">'
     +'<g transform="translate('+dx+','+dy+')">'+svg+'</g></svg>'
-    +'<p class="iso-hint no-print">Vista 3D de la distribución actual. Edita los asientos en «Plano».</p>';
+    +'<p class="iso-hint no-print">3D view of the current seating. Edit seats in “Floor plan”.</p>';
 }
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
@@ -904,7 +955,7 @@ function yardSVG(){
     else if(back==="N")br=box(cx-s,cy-s,cx+s,cy-s+w,h1,h2,c.back);
     else br=box(cx-s,cy+s-w,cx+s,cy+s,h1,h2,c.back);
     const body=(back==="N"||back==="W")?br+seat:seat+br;
-    return '<g><title>'+(g?esc(g.name):"Asiento libre")+'</title>'+body+'</g>';
+    return '<g><title>'+(g?esc(g.name):"Empty seat")+'</title>'+body+'</g>';
   }
   function tree(x,y,sc){
     let s=box(x-0.09*sc,y-0.09*sc,x+0.09*sc,y+0.09*sc,0,26*sc,{t:"#8a6a44",r:"#6d5233",l:"#7b5e3b"});
@@ -917,7 +968,7 @@ function yardSVG(){
     return s;
   }
   function couple(cx,cy){
-    const g=P(cx-0.24,cy,0), b=P(cx+0.24,cy,0);
+    const b=P(cx-0.24,cy,0), g=P(cx+0.24,cy,0);
     let s='<g><title>Carlos</title><rect x="'+(g[0]-5).toFixed(1)+'" y="'+(g[1]-24).toFixed(1)+'" width="10" height="19" rx="3.5" fill="#3c414d"/><circle cx="'+g[0].toFixed(1)+'" cy="'+(g[1]-29).toFixed(1)+'" r="5" fill="#e2b08a"/></g>';
     s+='<g><title>Camila</title><path d="M'+(b[0]-7).toFixed(1)+' '+b[1].toFixed(1)+' L'+(b[0]+7).toFixed(1)+' '+b[1].toFixed(1)+' L'+(b[0]+2.5).toFixed(1)+' '+(b[1]-19).toFixed(1)+' L'+(b[0]-2.5).toFixed(1)+' '+(b[1]-19).toFixed(1)+' Z" fill="#ffffff" stroke="#e8ddc5" stroke-width="1"/><circle cx="'+b[0].toFixed(1)+'" cy="'+(b[1]-24).toFixed(1)+'" r="5" fill="#e8bb90"/></g>';
     return s;
@@ -964,7 +1015,7 @@ function yardSVG(){
     s+=box(0.62,6.22,4.78,9.18,76,90,{t:"#737983",r:"#5c626b",l:"#69707a"});
     // puerta mirando a la piscina
     s+=poly([P(2.3,9.0,52),P(3.1,9.0,52),P(3.1,9.0,0),P(2.3,9.0,0)],"#6f5238","#5a4029",1.2);
-    return '<g><title>Casita del patio</title>'+s+'</g>';})());
+    return '<g><title>Backyard cottage</title>'+s+'</g>';})());
   // setos
   add(15.3,null,box(5,-0.7,26.5,0.15,0,42,{t:"#5d8146",r:"#43613c",l:"#527241"}));
   add(9.6,null,box(-0.7,4,0.1,16,0,36,{t:"#5d8146",r:"#43613c",l:"#527241"}));
@@ -993,7 +1044,7 @@ function yardSVG(){
     let s="";
     [13.55,16.0].forEach(px=>{s+=box(px-0.05,17.1,px+0.05,17.2,0,30,{t:"#b58a54",r:"#96703f",l:"#a67d49"});});
     s+=rail(13.6,14.3,20)+rail(13.6,14.3,8)+rail(15.3,15.95,20)+rail(15.3,15.95,8);
-    let g='<g><title>Puertica — acceso al patio trasero</title>';
+    let g='<g><title>Garden gate — access to the backyard</title>';
     [14.35,15.25].forEach(px=>{g+=box(px-0.045,17.1,px+0.045,17.2,0,26,{t:"#c9a052",r:"#a8813c",l:"#b98f47"});});
     g+=rail(14.4,15.2,18)+rail(14.4,15.2,6);
     const q1=P(14.4,17.15,6),q2=P(15.2,17.15,18);
@@ -1001,7 +1052,7 @@ function yardSVG(){
     return s+g;})());
   // el carro de la casa en la entrada (la carpa es su parking)
   add(41,null,(function(){
-    let s='<g><title>Entrada de carros — la carpa es el parking de la casa</title>';
+    let s='<g><title>Driveway — the canopy is the house carport</title>';
     s+=box(21.6,17.5,24.2,18.8,6,30,{t:"#eec83e",r:"#c39f1f",l:"#dcb52e"});
     s+=box(22.2,17.65,23.6,18.65,30,48,{t:"#f4d968",r:"#8fa7b8",l:"#a9c0cf"});
     [[21.9,17.55],[21.9,18.75],[23.9,17.55],[23.9,18.75]].forEach(w=>{
@@ -1041,7 +1092,7 @@ function yardSVG(){
     const cx=xr+c2*cs, cy=14.55-r*cs;
     add(cx+cy,"cer",chr(cx,cy,"N",ae["c-right-"+(r*Le.rightCols+c2)]));
   }
-  add(28.9,"cer",'<g><title>La carpa de los novios (el carport de la casa)</title>'+gazebo()+'</g>');
+  add(28.9,"cer",'<g><title>The couple\'s canopy (the house carport)</title>'+gazebo()+'</g>');
 
   /* ---- capas base ---- */
   let base="";
@@ -1084,13 +1135,13 @@ function yardSVG(){
   post+=strand(P(4.6,6.5,88),P(10.7,15.6,92),58,15);
 
   const nCer=Object.keys(ae).length, nCena=Object.keys(ac).length;
-  post+=badge(P(9.75,6.75,172),"\u{1F37D} Cena · "+nCena,"#d99a1f","cena");
-  post+=badge(P(12,17,228),"\u{1F492} Ceremonia · "+nCer,"#cf5230","ceremonia");
+  post+=badge(P(9.75,6.75,172),"\u{1F37D} Dinner · "+nCena,"#d99a1f","cena");
+  post+=badge(P(12,17,228),"\u{1F492} Ceremony · "+nCer,"#cf5230","ceremonia");
 
   const pad=42;
   let mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
   pts.forEach(p=>{mnx=Math.min(mnx,p[0]);mny=Math.min(mny,p[1]);mxx=Math.max(mxx,p[0]);mxy=Math.max(mxy,p[1]);});
-  return '<svg class="yard mode-'+state.lugarMode+'" viewBox="0 0 '+(mxx-mnx+pad*2).toFixed(0)+' '+(mxy-mny+pad*2).toFixed(0)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Patio en 3D">'
+  return '<svg class="yard mode-'+state.lugarMode+'" viewBox="0 0 '+(mxx-mnx+pad*2).toFixed(0)+' '+(mxy-mny+pad*2).toFixed(0)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Backyard in 3D">'
     +'<defs><pattern id="mow" width="76" height="76" patternUnits="userSpaceOnUse" patternTransform="rotate(26.5)"><rect width="38" height="76" fill="#87a05e"/></pattern></defs>'
     +'<g transform="translate('+(-mnx+pad).toFixed(1)+','+(-mny+pad).toFixed(1)+')">'
     +base+ringCena+runner+mid+post+'</g></svg>';
@@ -1113,7 +1164,7 @@ function renderPanel(){
   if(!p.classList.contains("show") || !state.layout[state.view]){ p.innerHTML=""; return; }
   const view=state.view;
   const L=state.layout[view];
-  let html='<h3>Ajustar '+(view==="cena"?"la mesa en U":"la ceremonia")+'</h3><div class="steppers">';
+  let html='<h3>Adjust '+(view==="cena"?"the U-shaped table":"the ceremony")+'</h3><div class="steppers">';
   const stepper=(key,label,val)=>`
     <div class="stp"><label>${label}</label>
       <div class="ctl">
@@ -1121,14 +1172,14 @@ function renderPanel(){
       </div>
     </div>`;
   if(view==="cena"){
-    html+=stepper("left","Brazo izquierdo",L.left);
-    html+=stepper("right","Brazo derecho",L.right);
-    html+=stepper("head","Mesa principal",L.head);
+    html+=stepper("left","Left arm",L.left);
+    html+=stepper("right","Right arm",L.right);
+    html+=stepper("head","Main table",L.head);
   }else{
-    html+=stepper("leftCols","Izq. columnas",L.leftCols);
-    html+=stepper("leftRows","Izq. filas",L.leftRows);
-    html+=stepper("rightCols","Der. columnas",L.rightCols);
-    html+=stepper("rightRows","Der. filas",L.rightRows);
+    html+=stepper("leftCols","Left · columns",L.leftCols);
+    html+=stepper("leftRows","Left · rows",L.leftRows);
+    html+=stepper("rightCols","Right · columns",L.rightCols);
+    html+=stepper("rightRows","Right · rows",L.rightRows);
   }
   html+='</div>';
   p.innerHTML=html;
@@ -1136,6 +1187,7 @@ function renderPanel(){
   p.querySelectorAll("[data-dec]").forEach(b=>b.addEventListener("click",()=>stepLayout(b.dataset.dec,-1)));
 }
 function stepLayout(key,delta){
+  if(!isEditor())return;
   const view=state.view;
   const L=state.layout[view];
   const min = (key==="leftCols"||key==="rightCols")?1:0;
@@ -1153,12 +1205,17 @@ function renderTabs(){
   el("view-ceremonia").classList.toggle("active",state.view==="ceremonia");
   el("view-cena").classList.toggle("active",state.view==="cena");
 
-  // Controles que sólo aplican al modo de edición (Plano) de ceremonia/cena
-  const editable = (state.view==="ceremonia"||state.view==="cena") && !state.threeD[state.view];
-  el("poolCard").style.display = editable ? "" : "none";
-  el("btnPanel").style.display = editable ? "" : "none";
-  el("btnAdd").style.display   = editable ? "" : "none";
-  if(!editable) el("panel").classList.remove("show");
+  // Editing controls: only for the signed-in editor, on floor-plan views
+  const editor=isEditor();
+  const plan=(state.view==="ceremonia"||state.view==="cena") && !state.threeD[state.view];
+  el("poolCard").style.display = (editor&&plan) ? "" : "none";
+  el("btnPanel").style.display = (editor&&plan) ? "" : "none";
+  el("btnAdd").style.display   = (editor&&plan) ? "" : "none";
+  el("btnReset").style.display = editor ? "" : "none";
+  el("searchBar").style.display = plan ? "" : "none";
+  el("viewNote").style.display  = (!editor&&plan) ? "" : "none";
+  el("btnAuth").textContent = editor ? "🔓 Editing · Sign out" : "🔒 Sign in to edit";
+  if(!(editor&&plan)) el("panel").classList.remove("show");
 }
 
 function renderSelBar(){
@@ -1183,7 +1240,8 @@ function render(){
 /*  Invitados: añadir / eliminar                                      */
 /* ------------------------------------------------------------------ */
 function addGuest(){
-  const name=prompt("Nombre del invitado:");
+  if(!isEditor())return;
+  const name=prompt("Guest name:");
   if(!name || !name.trim()) return;
   const ids=state.guests.map(g=>parseInt(g.id.slice(1))||0);
   const nid="g"+((Math.max(0,...ids))+1);
@@ -1191,9 +1249,10 @@ function addGuest(){
   save(); render();
 }
 function removeGuest(gid){
+  if(!isEditor())return;
   const g=guestById(gid);
   if(!g) return;
-  if(!confirm('¿Eliminar a "'+g.name+'" de la lista? Se quitará de ambas distribuciones.')) return;
+  if(!confirm('Remove "'+g.name+'" from the guest list? They will be removed from both layouts.')) return;
   state.guests=state.guests.filter(x=>x.id!==gid);
   for(const v of ["ceremonia","cena"]){
     const a=state.assign[v];
@@ -1213,11 +1272,22 @@ el("btnAdd").addEventListener("click",addGuest);
 el("btnPrint").addEventListener("click",()=>window.print());
 el("btnPanel").addEventListener("click",()=>{ el("panel").classList.toggle("show"); render(); });
 el("btnReset").addEventListener("click",()=>{
-  if(confirm("¿Reiniciar toda la distribución a los valores iniciales? Se perderán tus cambios.")){
+  if(confirm("Reset all seating to the defaults? Your changes will be lost.")){
     state=defaultState(); save(); render();
   }
 });
 el("selCancel").addEventListener("click",()=>{ state.selected=null; render(); });
+el("btnAuth").addEventListener("click",()=>{
+  if(isEditor()){ localStorage.removeItem(AUTH_KEY); state.selected=null; }
+  else{
+    const pin=prompt("Editor PIN:");
+    if(pin===null) return;
+    if(pin===EDITOR_PIN) localStorage.setItem(AUTH_KEY,"yes");
+    else{ alert("Incorrect PIN."); return; }
+  }
+  render();
+});
+el("seatSearch").addEventListener("input",e=>{ searchQ=norm(e.target.value.trim()); render(); });
 
 // toggles: Plano/Vista 3D (ceremonia, cena) y Ceremonia/Cena (lugar)
 document.querySelectorAll(".seg").forEach(seg=>{

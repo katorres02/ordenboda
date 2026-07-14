@@ -1,37 +1,48 @@
-# Distribución de Boda 💍
+# Camila & Carlos — Wedding Seating 💍
 
-Sitio web interactivo para organizar los asientos de la boda. Todo en un solo archivo
-(`index.html`), **sin dependencias externas** → funciona sin internet y se publica
-directo en GitHub Pages.
+Interactive seating chart for the wedding at **1445 Bd Roberval E, Longueuil**.
+Everything lives in a single file (`index.html`) with **no external dependencies** —
+works offline and deploys straight to GitHub Pages.
 
-## Cómo usarlo
+**Live site:** https://katorres02.github.io/ordenboda/
 
-- Pestañas **Ceremonia** y **Cena** (mesa en U).
-- **Toca un invitado** de la lista "Sin asignar" y luego **toca un asiento** para sentarle.
-  También puedes **arrastrar** los invitados a los asientos (en computadora).
-- Toca un asiento ocupado para "levantar" a esa persona y moverla.
-- Arrastra un invitado de vuelta a la lista para dejar su asiento libre.
-- **⚙︎ Ajustar distribución**: cambia el número de sillas/filas de cada sección.
-- **＋ Añadir invitado** y la **×** en cada invitado para quitarlo de la lista.
-- **🖨 Imprimir / PDF** para tener la distribución en papel.
-- Los cambios se **guardan automáticamente** en el navegador del dispositivo.
+## Features
 
-## Publicar en GitHub Pages
+- **Venue** tab: 3D recreation of the backyard — house, pool, cottage, the couple's
+  canopy (the carport) with its driveway and garden gate. Toggle between the
+  ceremony and dinner setups; hover a chair to see who sits there.
+- **Ceremony** tab: two seating sections with a center aisle, couple at the altar.
+- **Dinner** tab: U-shaped table — main table (5) on top, two arms going down.
+- **Floor plan / 3D view** toggle on both seating tabs.
+- **Guest search**: type a name to highlight their seat in pistachio green.
+- **Editor sign-in**: only the signed-in editor can move guests, add/remove them,
+  adjust the layout or reset. Everyone else can view and print.
+- Changes save automatically to the browser (localStorage), per device.
 
-1. Crea un repositorio en GitHub (p. ej. `ordenboda`).
-2. Sube este archivo `index.html` (y este README):
-   ```bash
-   git init
-   git add index.html README.md
-   git commit -m "Distribución de boda"
-   git branch -M main
-   git remote add origin https://github.com/TU-USUARIO/ordenboda.git
-   git push -u origin main
-   ```
-3. En GitHub → **Settings → Pages** → *Build and deployment* → Source: **Deploy from a branch**,
-   Branch: **main** / **/ (root)** → Save.
-4. En 1–2 minutos estará en `https://TU-USUARIO.github.io/ordenboda/`.
+## Editor PIN
 
-> Nota: la distribución se guarda en cada dispositivo por separado (localStorage). Si quieres
-> que todos vean exactamente la misma distribución, edita los valores por defecto en
-> `defaultState()` dentro de `index.html`.
+Click **🔒 Sign in to edit** and enter the PIN. The default PIN is **`1445`** —
+change it by editing the `EDITOR_PIN` constant near the top of the `<script>`
+in `index.html`.
+
+> Note: this is a light client-side gate to prevent accidental edits — not real
+> security. Anyone who reads the source can find the PIN.
+
+## Editing
+
+- Tap a guest chip, then tap a seat — or drag & drop (desktop).
+- Tap an occupied seat to pick that guest up and move them.
+- Drag a guest back to the "Unassigned" list to free their seat.
+- **⚙︎ Adjust layout** changes the number of seats/rows per section.
+
+## Publishing changes
+
+The published site shows the default seating hard-coded in `index.html`
+(each visitor's edits stay on their own device). To make a new arrangement
+the default for everyone, update `defaultState()` in `index.html` and push:
+
+```bash
+git add index.html && git commit -m "Update seating" && git push
+```
+
+GitHub Pages redeploys automatically in ~1 minute.
