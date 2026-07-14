@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Carlos &amp; Camila · Boda — Longueuil</title>
+<style>
+  :root{
+    --cream:#faf6ef;
+    --paper:#ffffff;
+    --ink:#3a342c;
+    --muted:#948a7c;
+    --gold:#b7935b;
+    --gold-deep:#9a763f;
+    --gold-soft:#efe4cd;
+    --wood:#cbab7f;
+    --wood-deep:#b8925f;
+    --line:#e8dfd0;
+    --sel:#fbeecb;
+    --ring:#c99a52;
+    --shadow:0 8px 24px rgba(94,74,42,.10);
+    --shadow-sm:0 2px 6px rgba(94,74,42,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #fff 0%, var(--cream) 60%),
+      var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .serif{font-family:Georgia,"Times New Roman",serif}
+
+  header.site{
+    text-align:center;
+    padding:34px 16px 10px;
+  }
+  header.site .kicker{
+    letter-spacing:.34em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--gold-deep);
+    margin:0 0 8px;
+  }
+  header.site h1{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:500;
+    font-size:clamp(26px,5vw,40px);
+    margin:0;
+    color:var(--ink);
+  }
+  header.site .rule{
+    width:64px;height:1px;background:var(--gold);
+    margin:14px auto 0;position:relative;
+  }
+  header.site .rule::before,header.site .rule::after{
+    content:"";position:absolute;top:-2px;width:5px;height:5px;border-radius:50%;
+    background:var(--gold);
+  }
+  header.site .rule::before{left:-10px}
+  header.site .rule::after{right:-10px}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px 60px}
+
+  /* Tabs */
+  .tabs{
+    display:flex;gap:6px;justify-content:center;margin:22px auto 6px;
+    background:var(--paper);border:1px solid var(--line);border-radius:999px;
+    padding:6px;width:max-content;max-width:100%;box-shadow:var(--shadow-sm);
+  }
+  .tab{
+    border:0;background:transparent;color:var(--muted);
+    font-size:15px;font-weight:600;padding:10px 22px;border-radius:999px;
+    cursor:pointer;transition:.18s;font-family:inherit;white-space:nowrap;
+  }
+  .tab:hover{color:var(--ink)}
+  .tab.active{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff;box-shadow:var(--shadow-sm)}
+  .tab .n{font-weight:400;opacity:.8;font-size:13px;margin-left:6px}
+
+  /* Toolbar */
+  .toolbar{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;
+    margin:16px 0 4px;
+  }
+  .btn{
+    font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line);background:var(--paper);color:var(--ink);
+    padding:9px 15px;border-radius:10px;transition:.15s;box-shadow:var(--shadow-sm);
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn:hover{border-color:var(--gold);color:var(--gold-deep)}
+  .btn.ghost{background:transparent;box-shadow:none;border-color:transparent;color:var(--muted)}
+  .btn.ghost:hover{color:var(--gold-deep)}
+  .btn.danger:hover{border-color:#d98a6a;color:#c05a34}
+
+  /* Pool */
+  .pool-card{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    box-shadow:var(--shadow);padding:16px 16px 14px;margin:16px 0 22px;
+  }
+  .pool-head{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;
+  }
+  .pool-head h2{
+    font-family:Georgia,serif;font-weight:500;font-size:17px;margin:0;color:var(--ink);
+  }
+  .pool-head .hint{font-size:12.5px;color:var(--muted)}
+  .pool{
+    display:flex;flex-wrap:wrap;gap:8px;min-height:46px;
+    border:1.5px dashed var(--line);border-radius:12px;padding:10px;
+    transition:.15s;background:#fdfbf7;
+  }
+  .pool.dropok{border-color:var(--gold);background:var(--sel)}
+  .pool .empty-note{color:var(--muted);font-size:13px;align-self:center;margin:auto}
+
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(180deg,#fff,#fbf7ef);
+    border:1px solid var(--line);border-radius:999px;
+    padding:7px 13px;font-size:13.5px;font-weight:600;color:var(--ink);
+    cursor:grab;user-select:none;transition:.12s;box-shadow:var(--shadow-sm);
+    white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--gold);transform:translateY(-1px)}
+  .chip:active{cursor:grabbing}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex:none}
+  .chip.selected{
+    background:linear-gradient(180deg,var(--sel),#f3e2bd);
+    border-color:var(--ring);box-shadow:0 0 0 3px rgba(201,154,82,.28);
+  }
+  .chip .x{
+    margin-left:2px;color:var(--muted);font-weight:700;font-size:14px;line-height:1;
+    padding:0 2px;border-radius:6px;
+  }
+  .chip .x:hover{color:#c05a34}
+
+  /* Selection banner */
+  .selbar{
+    position:sticky;top:8px;z-index:20;margin:0 auto 14px;max-width:640px;
+    background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff;
+    border-radius:12px;padding:11px 16px;box-shadow:var(--shadow);
+    display:none;align-items:center;justify-content:space-between;gap:12px;
+    font-size:14px;
+  }
+  .selbar.show{display:flex}
+  .selbar b{font-weight:700}
+  .selbar button{
+    background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;
+    border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .selbar button:hover{background:rgba(255,255,255,.3)}
+
+  /* Stage card */
+  .stage{
+    background:
+      radial-gradient(900px 300px at 50% 0%, #fff 0%, #fdfbf6 70%),
+      var(--paper);
+    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:22px 16px 30px;overflow-x:auto;
+  }
+  .stage-title{
+    text-align:center;font-family:Georgia,serif;font-size:15px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold-deep);margin:2px 0 20px;font-weight:500;
+  }
+
+  /* Seat (generic) */
+  .seat{
+    width:118px;min-height:48px;border-radius:12px;
+    border:1.5px dashed var(--line);background:#fdfbf7;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:6px 8px;font-size:13px;color:var(--muted);cursor:pointer;transition:.13s;
+    position:relative;
+  }
+  .seat:hover{border-color:var(--gold)}
+  .seat.filled{
+    border-style:solid;border-color:var(--gold-soft);
+    background:linear-gradient(180deg,#fff,#fbf3e3);
+    color:var(--ink);font-weight:600;box-shadow:var(--shadow-sm);
+  }
+  .seat.filled:hover{border-color:var(--gold)}
+  .seat.dropok{border-color:var(--gold);background:var(--sel);border-style:solid}
+  .seat.target{box-shadow:0 0 0 3px rgba(201,154,82,.35);border-color:var(--ring)}
+  .seat .num{
+    position:absolute;top:-8px;left:-8px;width:20px;height:20px;border-radius:50%;
+    background:var(--gold);color:#fff;font-size:11px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);
+  }
+  .seat.empty .num{background:#d8cbb4}
+  .seat .place{font-size:20px;color:#cdbfa6;font-weight:300;line-height:1}
+
+  /* ---------- CENA: U shape ---------- */
+  .u-grid{
+    display:grid;
+    grid-template-columns:auto 18px minmax(60px,1fr) 18px auto;
+    grid-template-rows:auto 18px auto;
+    justify-content:center;margin:0 auto;width:max-content;max-width:100%;
+    column-gap:10px;row-gap:0;
+  }
+  .arm{display:flex;flex-direction:column;gap:10px}
+  .arm-left{grid-column:1;grid-row:3}
+  .arm-right{grid-column:5;grid-row:3}
+  .bar{background:linear-gradient(180deg,var(--wood),var(--wood-deep));border-radius:6px}
+  .bar-left{grid-column:2;grid-row:2 / span 2;border-radius:0 0 6px 6px}
+  .bar-right{grid-column:4;grid-row:2 / span 2;border-radius:0 0 6px 6px}
+  .bar-bottom{grid-column:2 / span 3;grid-row:2;height:18px}
+  .u-label{
+    grid-column:3;grid-row:3;align-self:center;justify-self:center;text-align:center;
+    color:#c9b48f;font-family:Georgia,serif;font-style:italic;font-size:14px;padding:0 6px;
+  }
+  .head{
+    grid-column:2 / span 3;grid-row:1;
+    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding-bottom:12px;
+  }
+  .head .headline{
+    flex-basis:100%;text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-deep);margin-bottom:2px;
+  }
+
+  /* ---------- CEREMONIA ---------- */
+  .altar{
+    text-align:center;margin:0 auto 22px;max-width:340px;
+    border:1.5px solid var(--gold-soft);border-radius:14px;padding:12px 18px;
+    background:linear-gradient(180deg,#fff,#fbf3e3);box-shadow:var(--shadow-sm);
+  }
+  .altar .a-k{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-deep)}
+  .altar .a-t{font-family:Georgia,serif;font-size:20px;margin-top:2px}
+  .cer-wrap{display:flex;justify-content:center;align-items:flex-start;gap:0;width:max-content;margin:0 auto;max-width:100%}
+  .section{padding:0 8px}
+  .section .s-label{
+    text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:12px;
+  }
+  .seat-grid{display:grid;gap:10px}
+  .aisle{
+    align-self:stretch;width:40px;margin:0 6px;position:relative;flex:none;
+  }
+  .aisle::before{
+    content:"";position:absolute;left:50%;top:6px;bottom:6px;width:0;
+    border-left:2px dashed var(--gold-soft);transform:translateX(-50%);
+  }
+  .aisle .a-word{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg);
+    font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#cbbfa8;white-space:nowrap;
+  }
+
+  /* small steppers panel */
+  .panel{
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow-sm);padding:14px 16px;margin:0 0 16px;display:none;
+  }
+  .panel.show{display:block}
+  .panel h3{margin:0 0 12px;font-family:Georgia,serif;font-weight:500;font-size:15px}
+  .steppers{display:flex;flex-wrap:wrap;gap:14px 22px}
+  .stp{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--ink)}
+  .stp label{color:var(--muted);min-width:96px}
+  .stp .ctl{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .stp .ctl button{
+    width:30px;height:30px;border:0;background:#fbf7ef;color:var(--gold-deep);font-size:17px;font-weight:700;
+    cursor:pointer;font-family:inherit;
+  }
+  .stp .ctl button:hover{background:var(--sel)}
+  .stp .ctl span{min-width:30px;text-align:center;font-weight:700}
+
+  footer.site{text-align:center;color:var(--muted);font-size:12.5px;padding:24px 16px 8px}
+  footer.site .rule{width:40px;height:1px;background:var(--gold-soft);margin:0 auto 12px}
+
+  /* ---------- LUGAR / plano ---------- */
+  .sitemap{display:block;width:100%;max-width:900px;height:auto;margin:0 auto;border-radius:14px;
+    box-shadow:inset 0 0 0 1px var(--line)}
+  .zone{cursor:pointer;transition:.15s}
+  .zone .zone-area{transition:.15s}
+  .zone:hover .zone-area{fill-opacity:.30;stroke-width:7}
+  .map-legend{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:18px 0 4px;font-size:13.5px;color:var(--ink)}
+  .map-legend .lg{display:inline-flex;align-items:center;gap:9px}
+  .map-legend .sw{width:26px;height:15px;border-radius:4px;border:2px dashed}
+  .map-note{text-align:center;color:var(--muted);font-size:12.5px;margin:4px auto 0;max-width:520px}
+
+  /* ---------- Header hero ---------- */
+  header.site .amp{color:var(--gold-deep);font-style:italic;font-weight:400}
+  header.site .sub{color:var(--muted);font-size:13.5px;margin:8px 0 0;letter-spacing:.05em}
+
+  /* ---------- LUGAR: patio 3D ---------- */
+  .yard-hero{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#fffaf0 0%,#f9edd8 58%,#f2e2c4 100%);
+    border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);
+    padding:28px 14px 30px;
+  }
+  .yard-hero::before{
+    content:"";position:absolute;width:460px;height:460px;border-radius:50%;
+    background:radial-gradient(circle,rgba(214,166,90,.20),transparent 70%);
+    top:-170px;left:-130px;pointer-events:none;
+  }
+  .yard-hero::after{
+    content:"";position:absolute;width:560px;height:560px;border-radius:50%;
+    background:radial-gradient(circle,rgba(207,82,48,.10),transparent 70%);
+    bottom:-240px;right:-180px;pointer-events:none;
+  }
+  .yard-head{text-align:center;margin-bottom:14px;position:relative;z-index:2}
+  .yh-k{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep)}
+  .yh-t{font-family:Georgia,serif;font-size:clamp(21px,3.4vw,29px);margin:5px 0 3px}
+  .yh-sub{color:var(--muted);font-size:13px;max-width:460px;margin:0 auto}
+  .yard-segwrap{display:flex;justify-content:center;margin:8px 0 12px;position:relative;z-index:2}
+  #yardScene{position:relative;z-index:1}
+  #yardScene svg{
+    display:block;width:100%;max-width:1060px;margin:0 auto;overflow:visible;
+    filter:drop-shadow(0 30px 34px rgba(94,74,42,.30));
+  }
+  .g-cer,.g-cena{transition:opacity .5s ease,filter .5s ease}
+  svg.mode-cena .g-cer{opacity:.24;filter:saturate(.35)}
+  svg.mode-ceremonia .g-cena{opacity:.24;filter:saturate(.35)}
+  .zone-badge{cursor:pointer}
+  .zone-badge rect{transition:stroke-width .15s}
+  .zone-badge:hover rect{stroke-width:4}
+  .bulb{animation:twinkle 2.4s ease-in-out infinite}
+  @keyframes twinkle{0%,100%{opacity:.45}50%{opacity:1}}
+  .water-glint{animation:glint 5.5s ease-in-out infinite alternate}
+  @keyframes glint{to{transform:translate(12px,5px)}}
+
+  /* ---------- Toggle Plano / 3D ---------- */
+  .stage-tools{display:flex;justify-content:center;margin:0 0 16px}
+  .seg{display:inline-flex;background:#f3ece0;border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+  .seg button{border:0;background:transparent;padding:7px 18px;border-radius:999px;font-weight:600;
+    font-size:13px;color:var(--muted);cursor:pointer;font-family:inherit;transition:.15s}
+  .seg button.on{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff;box-shadow:var(--shadow-sm)}
+  .iso-wrap{width:100%;overflow-x:auto}
+  .iso-wrap svg{display:block;margin:0 auto;max-width:1000px;width:100%;height:auto}
+  .iso-hint{text-align:center;color:var(--muted);font-size:12.5px;margin-top:12px}
+
+  .view{display:none}
+  .view.active{display:block}
+
+  @media (max-width:560px){
+    .seat{width:96px;font-size:12px}
+    .u-grid{column-gap:6px}
+  }
+
+  /* Print */
+  @media print{
+    body{background:#fff}
+    .tabs,.toolbar,.selbar,.pool-card,.panel,footer.site .actions,.btn,.chip .x,.seat .num{ }
+    .no-print{display:none !important}
+    .stage{box-shadow:none;border:none;overflow:visible}
+    header.site{padding-top:0}
+    .seat{cursor:default}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <p class="kicker">Longueuil · Montréal</p>
+  <h1 class="serif">Carlos <span class="amp">&amp;</span> Camila</h1>
+  <p class="sub">Distribución de invitados · ceremonia y cena</p>
+  <div class="rule"></div>
+</header>
+
+<div class="wrap">
+
+  <div class="tabs no-print" id="tabs">
+    <button class="tab active" data-view="lugar">Lugar</button>
+    <button class="tab" data-view="ceremonia">Ceremonia <span class="n" id="tabc"></span></button>
+    <button class="tab" data-view="cena">Cena <span class="n" id="tabd"></span></button>
+  </div>
+
+  <div class="toolbar no-print">
+    <button class="btn" id="btnPanel">⚙︎ Ajustar distribución</button>
+    <button class="btn" id="btnAdd">＋ Añadir invitado</button>
+    <button class="btn" id="btnPrint">🖨 Imprimir / PDF</button>
+    <button class="btn danger" id="btnReset">↺ Reiniciar</button>
+  </div>
+
+  <!-- adjust panel -->
+  <div class="panel no-print" id="panel"></div>
+
+  <!-- selection banner -->
+  <div class="selbar no-print" id="selbar">
+    <span>Colocando a <b id="selName"></b> — toca un asiento para sentarle.</span>
+    <button id="selCancel">Cancelar</button>
+  </div>
+
+  <!-- pool -->
+  <div class="pool-card no-print" id="poolCard">
+    <div class="pool-head">
+      <h2 class="serif">Sin asignar <span id="poolTitleView" style="color:var(--muted);font-weight:400;font-size:14px"></span></h2>
+      <span class="hint">Toca un invitado y luego un asiento · o arrastra</span>
+    </div>
+    <div class="pool" id="pool"></div>
+  </div>
+
+  <!-- LUGAR -->
+  <section class="view active" id="view-lugar">
+    <div class="yard-hero">
+      <div class="yard-head">
+        <div class="yh-k">Longueuil · Montréal</div>
+        <div class="yh-t serif">El patio de la casa</div>
+        <div class="yh-sub">Recreación 3D del montaje — pasa el cursor sobre una silla para ver quién se sienta ahí</div>
+      </div>
+      <div class="yard-segwrap no-print">
+        <div class="seg" data-seg="lugar">
+          <button data-mode="ceremonia" class="on">💒 Ceremonia</button>
+          <button data-mode="cena">🍽 Cena</button>
+        </div>
+      </div>
+      <div id="yardScene"></div>
+      <div class="map-legend no-print">
+        <span class="lg"><span class="sw" style="border-color:#cf5230;background:rgba(207,82,48,.14)"></span> Carpa de los novios — ceremonia</span>
+        <span class="lg"><span class="sw" style="border-color:#d99a1f;background:rgba(217,154,31,.14)"></span> Mesa en U — cena</span>
+      </div>
+      <p class="map-note no-print">Toca la etiqueta de una zona para editar su distribución. Las sillas se mueven entre ceremonia y cena porque el espacio es reducido.</p>
+    </div>
+  </section>
+
+  <!-- CEREMONIA -->
+  <section class="view active" id="view-ceremonia">
+    <div class="stage">
+      <div class="stage-tools no-print">
+        <div class="seg" data-seg="ceremonia">
+          <button data-mode="2d" class="on">Plano</button>
+          <button data-mode="3d">Vista 3D</button>
+        </div>
+      </div>
+      <div id="cerFlat">
+        <div class="altar">
+          <div class="a-k">Frente</div>
+          <div class="a-t serif">Altar</div>
+        </div>
+        <div class="cer-wrap" id="cerWrap"></div>
+      </div>
+      <div class="iso-wrap" id="cerIso" style="display:none"></div>
+    </div>
+  </section>
+
+  <!-- CENA -->
+  <section class="view" id="view-cena">
+    <div class="stage">
+      <div class="stage-tools no-print">
+        <div class="seg" data-seg="cena">
+          <button data-mode="2d" class="on">Plano</button>
+          <button data-mode="3d">Vista 3D</button>
+        </div>
+      </div>
+      <div id="cenaFlat">
+        <div class="stage-title">Mesa en U</div>
+        <div class="u-grid" id="uGrid"></div>
+      </div>
+      <div class="iso-wrap" id="cenaIso" style="display:none"></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="site">
+  <div class="rule"></div>
+  <div>Los cambios se guardan automáticamente en este dispositivo.</div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------ */
+/*  Datos por defecto                                                 */
+/* ------------------------------------------------------------------ */
+const NAMES = [
+  "Olga","Elizabeth","Juan Carlos","Mariel","Alika","Duhamel","Tom","Elodie",
+  "Paola","Andrés","Sofía","Charles","Dayene","Vitor","Nazanin","Melissa",
+  "Yoan","Lenyn","Daniella","Estefanía","Ben","Alejandra","Fernando",
+  "Camila","Carlos"
+];
+
+function defaultState(){
+  const guests = NAMES.map((name,i)=>({id:"g"+(i+1), name}));
+  const byName = {};
+  guests.forEach(g=>byName[g.name]=g.id);
+
+  // Layout config
+  const layout = {
+    ceremonia:{leftCols:4,leftRows:4,rightCols:2,rightRows:4},
+    cena:{left:10,right:10,head:5}
+  };
+
+  // ----- Ceremonia default (según boceto de números en círculo) -----
+  // Sección izquierda (4 columnas), fila por fila tal como el boceto:
+  const cerLeft = [
+    "Mariel","Juan Carlos","Elizabeth","Olga",     // 4 3 2 1
+    "Elodie","Tom","Duhamel","Alika",              // 8 7 6 5
+    "Charles","Sofía","Andrés","Paola",            // 12 11 10 9
+    "Dayene","Vitor","Nazanin",""                  // 13 14 15 -
+  ];
+  // Sección derecha (2 columnas):
+  const cerRight = [
+    "Melissa","Yoan",       // 16 17
+    "Lenyn","Daniella",     // 18 19
+    "Alejandra","Fernando", // 22 23
+    "Estefanía","Ben"       // 20 21
+  ];
+
+  const cerAssign = {};
+  cerLeft.forEach((n,i)=>{ if(n) cerAssign["c-left-"+i]=byName[n]; });
+  cerRight.forEach((n,i)=>{ if(n) cerAssign["c-right-"+i]=byName[n]; });
+
+  // ----- Cena default (mesa en U según boceto) -----
+  const cenaLeft = ["Mariel","Paola","Andrés","Nazanin","Alika","Duhamel","Sofía","Charles","Tom","Elodie"];
+  const cenaRight= ["Yoan","Daniella","Melissa","Lenyn","Ben","Estefanía","Alejandra","Fernando","Vitor","Dayene"];
+  const cenaHead = ["Olga","Camila","Carlos","Elizabeth","Juan Carlos"];
+  const cenaAssign = {};
+  cenaLeft.forEach((n,i)=>{ cenaAssign["d-left-"+i]=byName[n]; });
+  cenaRight.forEach((n,i)=>{ cenaAssign["d-right-"+i]=byName[n]; });
+  cenaHead.forEach((n,i)=>{ cenaAssign["d-head-"+i]=byName[n]; });
+
+  return {
+    guests, layout,
+    assign:{ ceremonia:cerAssign, cena:cenaAssign },
+    view:"lugar",
+    threeD:{ ceremonia:false, cena:false },
+    lugarMode:"ceremonia",
+    selected:null
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Estado + persistencia                                             */
+/* ------------------------------------------------------------------ */
+const KEY="ordenboda-v1";
+let state = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    if(!s.guests || !s.assign) return defaultState();
+    s.selected=null;
+    if(!s.view) s.view="lugar";
+    if(!s.threeD) s.threeD={ceremonia:false,cena:false};
+    if(!s.lugarMode) s.lugarMode="ceremonia";
+    return s;
+  }catch(e){ return defaultState(); }
+}
+function save(){
+  const {selected, ...persist}=state;
+  localStorage.setItem(KEY, JSON.stringify(persist));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Asientos válidos según layout                                     */
+/* ------------------------------------------------------------------ */
+function seatIds(view){
+  const L=state.layout[view];
+  const ids=[];
+  if(view==="ceremonia"){
+    for(let i=0;i<L.leftCols*L.leftRows;i++) ids.push("c-left-"+i);
+    for(let i=0;i<L.rightCols*L.rightRows;i++) ids.push("c-right-"+i);
+  }else{
+    for(let i=0;i<L.left;i++) ids.push("d-left-"+i);
+    for(let i=0;i<L.right;i++) ids.push("d-right-"+i);
+    for(let i=0;i<L.head;i++) ids.push("d-head-"+i);
+  }
+  return ids;
+}
+function validAssign(view){
+  const valid=new Set(seatIds(view));
+  const a=state.assign[view];
+  for(const k in a){ if(!valid.has(k)) delete a[k]; }
+  return a;
+}
+function guestById(id){ return state.guests.find(g=>g.id===id); }
+function seatOfGuest(view,gid){
+  const a=state.assign[view];
+  for(const k in a){ if(a[k]===gid) return k; }
+  return null;
+}
+function unassignedGuests(view){
+  const a=validAssign(view);
+  const placed=new Set(Object.values(a));
+  return state.guests.filter(g=>!placed.has(g.id));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Lógica de colocación                                              */
+/* ------------------------------------------------------------------ */
+function selectGuest(gid){
+  state.selected = (state.selected===gid) ? null : gid;
+  render();
+}
+function seatClick(view,seatId){
+  const a=validAssign(view);
+  const occ=a[seatId]||null;
+  if(state.selected){
+    if(occ===state.selected){ state.selected=null; }
+    else{
+      // quitar al seleccionado de su asiento previo (si lo tenía)
+      const prev=seatOfGuest(view,state.selected);
+      if(prev) delete a[prev];
+      a[seatId]=state.selected;
+      state.selected = occ ? occ : null; // si desplazó a alguien, seguimos con él
+    }
+  }else{
+    if(occ){ delete a[seatId]; state.selected=occ; } // levantar
+  }
+  save(); render();
+}
+function dropGuestOnSeat(view,seatId,gid){
+  const a=validAssign(view);
+  if(a[seatId]===gid) return;
+  const prev=seatOfGuest(view,gid);
+  if(prev) delete a[prev];
+  a[seatId]=gid; // si estaba ocupado, el anterior vuelve al pool
+  state.selected=null;
+  save(); render();
+}
+function unassign(view,gid){
+  const a=validAssign(view);
+  const s=seatOfGuest(view,gid);
+  if(s) delete a[s];
+  save(); render();
+}
+
+/* ------------------------------------------------------------------ */
+/*  Render                                                            */
+/* ------------------------------------------------------------------ */
+const el=id=>document.getElementById(id);
+
+function makeChip(g,ctx){
+  const c=document.createElement("div");
+  c.className="chip"+(state.selected===g.id?" selected":"");
+  c.draggable=true;
+  c.dataset.gid=g.id;
+  c.innerHTML='<span class="dot"></span><span class="nm"></span>';
+  c.querySelector(".nm").textContent=g.name;
+  if(ctx==="pool"){
+    const x=document.createElement("span");
+    x.className="x";x.textContent="×";x.title="Eliminar de la lista";
+    x.addEventListener("click",ev=>{ev.stopPropagation();removeGuest(g.id);});
+    c.appendChild(x);
+  }
+  c.addEventListener("click",ev=>{ev.stopPropagation();selectGuest(g.id);});
+  c.addEventListener("dragstart",ev=>{ev.dataTransfer.setData("text/plain",g.id);ev.dataTransfer.effectAllowed="move";});
+  return c;
+}
+
+function makeSeat(view,seatId,num){
+  const a=validAssign(view);
+  const gid=a[seatId];
+  const s=document.createElement("div");
+  s.className="seat "+(gid?"filled":"empty");
+  s.dataset.seat=seatId;
+  if(state.selected && state.selected===gid) s.classList.add("target");
+
+  if(num){ const n=document.createElement("span");n.className="num";n.textContent=num;s.appendChild(n); }
+
+  const label=document.createElement("span");
+  if(gid){ label.className="nm"; label.textContent=guestById(gid)?.name||"?"; }
+  else{ label.className="place"; label.textContent="＋"; }
+  s.appendChild(label);
+
+  s.addEventListener("click",()=>seatClick(view,seatId));
+  s.addEventListener("dragover",ev=>{ev.preventDefault();s.classList.add("dropok");});
+  s.addEventListener("dragleave",()=>s.classList.remove("dropok"));
+  s.addEventListener("drop",ev=>{
+    ev.preventDefault();s.classList.remove("dropok");
+    const gid=ev.dataTransfer.getData("text/plain");
+    if(gid) dropGuestOnSeat(view,seatId,gid);
+  });
+  return s;
+}
+
+function renderPool(){
+  const view=state.view;
+  const pool=el("pool");
+  pool.innerHTML="";
+  const list=unassignedGuests(view);
+  if(list.length===0){
+    const e=document.createElement("div");
+    e.className="empty-note";e.textContent="Todos los invitados están asignados ✓";
+    pool.appendChild(e);
+  }else{
+    list.forEach(g=>pool.appendChild(makeChip(g,"pool")));
+  }
+  el("poolTitleView").textContent = "· "+(view==="cena"?"Cena":"Ceremonia");
+}
+
+function renderCeremonia(){
+  syncSeg("ceremonia");
+  const flat=el("cerFlat"), isoC=el("cerIso");
+  if(state.threeD.ceremonia){ flat.style.display="none"; isoC.style.display=""; isoC.innerHTML=iso3D("ceremonia"); return; }
+  flat.style.display=""; isoC.style.display="none";
+  const L=state.layout.ceremonia;
+  const wrap=el("cerWrap");
+  wrap.innerHTML="";
+
+  const secL=document.createElement("div");
+  secL.className="section";
+  secL.innerHTML='<div class="s-label">Sección izquierda</div>';
+  const gL=document.createElement("div");
+  gL.className="seat-grid";
+  gL.style.gridTemplateColumns="repeat("+L.leftCols+",auto)";
+  for(let i=0;i<L.leftCols*L.leftRows;i++) gL.appendChild(makeSeat("ceremonia","c-left-"+i));
+  secL.appendChild(gL);
+
+  const aisle=document.createElement("div");
+  aisle.className="aisle";
+  aisle.innerHTML='<span class="a-word">Pasillo</span>';
+
+  const secR=document.createElement("div");
+  secR.className="section";
+  secR.innerHTML='<div class="s-label">Sección derecha</div>';
+  const gR=document.createElement("div");
+  gR.className="seat-grid";
+  gR.style.gridTemplateColumns="repeat("+L.rightCols+",auto)";
+  for(let i=0;i<L.rightCols*L.rightRows;i++) gR.appendChild(makeSeat("ceremonia","c-right-"+i));
+  secR.appendChild(gR);
+
+  wrap.appendChild(secL);
+  wrap.appendChild(aisle);
+  wrap.appendChild(secR);
+}
+
+function renderCena(){
+  syncSeg("cena");
+  const flat=el("cenaFlat"), isoC=el("cenaIso");
+  if(state.threeD.cena){ flat.style.display="none"; isoC.style.display=""; isoC.innerHTML=iso3D("cena"); return; }
+  flat.style.display=""; isoC.style.display="none";
+  const L=state.layout.cena;
+  const grid=el("uGrid");
+  grid.innerHTML="";
+
+  const armL=document.createElement("div");armL.className="arm arm-left";
+  for(let i=0;i<L.left;i++) armL.appendChild(makeSeat("cena","d-left-"+i,i+1));
+
+  const armR=document.createElement("div");armR.className="arm arm-right";
+  for(let i=0;i<L.right;i++) armR.appendChild(makeSeat("cena","d-right-"+i,i+1));
+
+  const barL=document.createElement("div");barL.className="bar bar-left";
+  const barR=document.createElement("div");barR.className="bar bar-right";
+  const barB=document.createElement("div");barB.className="bar bar-bottom";
+  const lab=document.createElement("div");lab.className="u-label";lab.textContent="Pista / centro";
+
+  const head=document.createElement("div");head.className="head";
+  const hl=document.createElement("div");hl.className="headline";hl.textContent="Mesa principal";
+  head.appendChild(hl);
+  for(let i=0;i<L.head;i++) head.appendChild(makeSeat("cena","d-head-"+i));
+
+  grid.appendChild(armL);
+  grid.appendChild(barL);
+  grid.appendChild(lab);
+  grid.appendChild(barR);
+  grid.appendChild(armR);
+  grid.appendChild(barB);
+  grid.appendChild(head);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Vista 3D isométrica (SVG dibujado por código)                     */
+/* ------------------------------------------------------------------ */
+function syncSeg(view){
+  document.querySelectorAll('.seg[data-seg="'+view+'"] button').forEach(b=>{
+    const on = (b.dataset.mode==="3d") === !!state.threeD[view];
+    b.classList.toggle("on", on);
+  });
+}
+
+const ISO={
+  TILE:38,
+  colFill:{seat:{t:"#eccb8f",r:"#c0965a",l:"#d3ac6d"}, back:{t:"#caa066",r:"#9c7642",l:"#b3894f"}},
+  colEmpty:{seat:{t:"#e9e4da",r:"#c6bfb1",l:"#d6cfc2"}, back:{t:"#d9d3c7",r:"#bcb4a4",l:"#cbc3b4"}},
+  table:{t:"#c8a878",r:"#9a7947",l:"#b18f5c"},
+  deck:{t:"#e3d7bd",r:"#c3b491",l:"#d3c4a3"},
+  cloth:"#fbf6ec"
+};
+
+function iso3D(view){
+  const T=ISO.TILE;
+  const P=(x,y,z)=>[(x-y)*T, (x+y)*T*0.5 - z];
+  const pts=[];
+  const track=p=>{pts.push(p);return p;};
+  const fmt=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  const poly=(arr,fill,stroke)=>'<polygon points="'+fmt(arr)+'" fill="'+fill+'" stroke="'+(stroke||fill)+'" stroke-width="1" stroke-linejoin="round"/>';
+
+  // caja isométrica: devuelve svg de caras visibles (top, +x, +y)
+  function box(x0,y0,x1,y1,z0,z1,c){
+    const A1=track(P(x0,y0,z1)),B1=track(P(x1,y0,z1)),C1=track(P(x1,y1,z1)),D1=track(P(x0,y1,z1));
+    const B0=track(P(x1,y0,z0)),C0=track(P(x1,y1,z0)),D0=track(P(x0,y1,z0));
+    return poly([D1,C1,C0,D0],c.l)+poly([B1,C1,C0,B0],c.r)+poly([A1,B1,C1,D1],c.t);
+  }
+  function chair(cx,cy,back,filled){
+    const c = filled?ISO.colFill:ISO.colEmpty;
+    const s=0.32, sz0=0, sz1=22, bz1=52;
+    let seat=box(cx-s,cy-s,cx+s,cy+s,sz0,sz1,c.seat);
+    let br="";
+    if(back==="W") br=box(cx-s,cy-s,cx-s+0.10,cy+s,sz1,bz1,c.back);
+    else if(back==="E") br=box(cx+s-0.10,cy-s,cx+s,cy+s,sz1,bz1,c.back);
+    else if(back==="N") br=box(cx-s,cy-s,cx+s,cy-s+0.10,sz1,bz1,c.back);
+    else br=box(cx-s,cy+s-0.10,cx+s,cy+s,sz1,bz1,c.back);
+    // trasera detrás del asiento -> dibujar primero
+    return (back==="N"||back==="W") ? br+seat : seat+br;
+  }
+  function label(cx,cy,name){
+    const a=P(cx,cy,60);
+    const w=Math.max(38,name.length*7.4+16), h=21, lx=a[0], ly=a[1]-30;
+    track([lx-w/2,ly-h/2]); track([lx+w/2,ly+h/2]);
+    return '<line x1="'+lx.toFixed(1)+'" y1="'+(a[1]-8).toFixed(1)+'" x2="'+lx.toFixed(1)+'" y2="'+(ly+h/2).toFixed(1)+'" stroke="#c9a052" stroke-width="1.5"/>'
+      +'<g><rect x="'+(lx-w/2).toFixed(1)+'" y="'+(ly-h/2).toFixed(1)+'" width="'+w+'" height="'+h+'" rx="10" fill="#fffdf8" stroke="#e0cfa6" stroke-width="1.2"/>'
+      +'<text x="'+lx.toFixed(1)+'" y="'+(ly+4).toFixed(1)+'" text-anchor="middle" font-size="12.5" font-weight="600" fill="#3a342c" font-family="-apple-system,Segoe UI,Roboto,sans-serif">'+esc(name)+'</text></g>';
+  }
+
+  // ---- construir escena ----
+  const a=validAssign(view);
+  let seats=[], tables=[], canopy="";
+
+  if(view==="cena"){
+    const L=state.layout.cena;
+    const lx0=0,lx1=0.7, rx0=3.4,rx1=4.1, tz0=0,tz1=26;
+    const armL=L.left, armR=L.right, headN=L.head;
+    tables.push(["head",0,-0.7,rx1,0,tz0,tz1]);
+    tables.push(["left",lx0,0,lx1,armL,tz0,tz1]);
+    tables.push(["right",rx0,0,rx1,armR,tz0,tz1]);
+    for(let i=0;i<headN;i++){ const cx=0.35+(headN>1?i*(3.4/(headN-1)):1.7); seats.push({cx,cy:-1.25,back:"N",id:"d-head-"+i}); }
+    for(let j=0;j<armL;j++) seats.push({cx:-0.85,cy:0.55+j,back:"W",id:"d-left-"+j});
+    for(let j=0;j<armR;j++) seats.push({cx:4.95,cy:0.55+j,back:"E",id:"d-right-"+j});
+  } else {
+    const L=state.layout.ceremonia;
+    const step=1.05, aisle=1.5;
+    const leftW=(L.leftCols-1)*step;
+    const rightX0=leftW+step+aisle;
+    for(let r=0;r<L.leftRows;r++) for(let c=0;c<L.leftCols;c++)
+      seats.push({cx:c*step, cy:r*step, back:"S", id:"c-left-"+(r*L.leftCols+c)});
+    for(let r=0;r<L.rightRows;r++) for(let c=0;c<L.rightCols;c++)
+      seats.push({cx:rightX0+c*step, cy:r*step, back:"S", id:"c-right-"+(r*L.rightCols+c)});
+    // carpa / altar al frente
+    const maxX=rightX0+(L.rightCols-1)*step;
+    const cxm=maxX/2, fy=-2.4;
+    tables.push(["altar",cxm-1.0,fy-0.4,cxm+1.0,fy+0.4,0,14]);
+    const px=[[cxm-1.4,fy-0.9],[cxm+1.4,fy-0.9],[cxm-1.4,fy+0.9],[cxm+1.4,fy+0.9]];
+    let posts="";
+    px.forEach(p=>{posts+=box(p[0]-0.06,p[1]-0.06,p[0]+0.06,p[1]+0.06,0,150,{t:"#e7ddca",r:"#c7bda6",l:"#d7ccb6"});});
+    const roof=box(cxm-1.5,fy-1.0,cxm+1.5,fy+1.0,150,160,{t:"rgba(219,90,60,.55)",r:"rgba(180,70,45,.55)",l:"rgba(200,80,52,.55)"});
+    canopy={posts,roof};
+  }
+
+  // ---- pintar (algoritmo del pintor: de atrás hacia adelante) ----
+  let svg="";
+  // suelo
+  const allx=[], ally=[];
+  seats.forEach(s=>{allx.push(s.cx);ally.push(s.cy);});
+  tables.forEach(t=>{allx.push(t[1],t[3]);ally.push(t[2],t[4]);});
+  const gx0=Math.min(...allx)-1.2, gx1=Math.max(...allx)+1.2, gy0=Math.min(...ally)-1.2, gy1=Math.max(...ally)+1.2;
+  svg+=box(gx0,gy0,gx1,gy1,-8,0,ISO.deck);
+
+  // ordenar mesas + sillas por profundidad
+  const items=[];
+  tables.forEach(t=>items.push({depth:(t[1]+t[3]+t[2]+t[4])/2, kind:"t", t}));
+  seats.forEach(s=>items.push({depth:s.cx+s.cy, kind:"s", s}));
+  items.sort((p,q)=>p.depth-q.depth);
+  const labels=[];
+  items.forEach(it=>{
+    if(it.kind==="t"){ const t=it.t; svg+=box(t[1],t[2],t[3],t[4],t[5],t[6], t[0]==="altar"?ISO.colFill.back:ISO.table); }
+    else{
+      const gid=a[it.s.id], g=gid?guestById(gid):null;
+      svg+=chair(it.s.cx,it.s.cy,it.s.back,!!g);
+      if(g) labels.push({d:it.depth, svg:label(it.s.cx,it.s.cy,g.name)});
+    }
+  });
+  if(canopy){ svg+=canopy.posts; }
+  // etiquetas al final (encima de todo), ordenadas por profundidad
+  labels.sort((p,q)=>p.d-q.d).forEach(l=>svg+=l.svg);
+  if(canopy){ svg+=canopy.roof; }
+
+  // ---- bounding box + viewBox ----
+  const pad=24;
+  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+  pts.forEach(p=>{minX=Math.min(minX,p[0]);minY=Math.min(minY,p[1]);maxX=Math.max(maxX,p[0]);maxY=Math.max(maxY,p[1]);});
+  const dx=(-minX+pad).toFixed(1), dy=(-minY+pad).toFixed(1);
+  const W=(maxX-minX+pad*2).toFixed(1), H=(maxY-minY+pad*2).toFixed(1);
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Vista 3D">'
+    +'<g transform="translate('+dx+','+dy+')">'+svg+'</g></svg>'
+    +'<p class="iso-hint no-print">Vista 3D de la distribución actual. Edita los asientos en «Plano».</p>';
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+/* ------------------------------------------------------------------ */
+/*  LUGAR: escena 3D del patio (Longueuil)                            */
+/* ------------------------------------------------------------------ */
+function yardSVG(){
+  const T=34, pts=[];
+  const P=(x,y,z)=>{const p=[(x-y)*T,(x+y)*T*0.5-(z||0)];pts.push(p);return p;};
+  const F=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  const poly=(a,f,s,sw)=>'<polygon points="'+F(a)+'" fill="'+f+'" stroke="'+(s||f)+'" stroke-width="'+(sw||1)+'" stroke-linejoin="round"/>';
+  function box(x0,y0,x1,y1,z0,z1,c){
+    const A1=P(x0,y0,z1),B1=P(x1,y0,z1),C1=P(x1,y1,z1),D1=P(x0,y1,z1);
+    const B0=P(x1,y0,z0),C0=P(x1,y1,z0),D0=P(x0,y1,z0);
+    return poly([D1,C1,C0,D0],c.l)+poly([B1,C1,C0,B0],c.r)+poly([A1,B1,C1,D1],c.t);
+  }
+  const ell=(cx,cy,rx,ry,z)=>{const a=[];for(let i=0;i<44;i++){const t=i/44*Math.PI*2;a.push(P(cx+rx*Math.cos(t),cy+ry*Math.sin(t),z||0.6));}return a;};
+
+  function chr(cx,cy,back,gid){
+    const g=gid?guestById(gid):null;
+    const c=g?ISO.colFill:ISO.colEmpty, s=0.2, w=0.09, h1=10, h2=26;
+    const seat=box(cx-s,cy-s,cx+s,cy+s,0,h1,c.seat);
+    let br;
+    if(back==="W")br=box(cx-s,cy-s,cx-s+w,cy+s,h1,h2,c.back);
+    else if(back==="E")br=box(cx+s-w,cy-s,cx+s,cy+s,h1,h2,c.back);
+    else if(back==="N")br=box(cx-s,cy-s,cx+s,cy-s+w,h1,h2,c.back);
+    else br=box(cx-s,cy+s-w,cx+s,cy+s,h1,h2,c.back);
+    const body=(back==="N"||back==="W")?br+seat:seat+br;
+    return '<g><title>'+(g?esc(g.name):"Asiento libre")+'</title>'+body+'</g>';
+  }
+  function tree(x,y,sc){
+    let s=box(x-0.09*sc,y-0.09*sc,x+0.09*sc,y+0.09*sc,0,26*sc,{t:"#8a6a44",r:"#6d5233",l:"#7b5e3b"});
+    const c=[[-0.22,0.1,42,30,"#5d8146"],[0,0.06,58,38,"#67904e"],[0.2,-0.14,84,27,"#79a35c"]];
+    c.forEach(k=>{
+      const q=P(x+k[0]*sc,y+k[1]*sc,k[2]*sc), r=k[3]*sc;
+      pts.push([q[0]-r,q[1]-r],[q[0]+r,q[1]+r]);
+      s+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="'+r.toFixed(1)+'" fill="'+k[4]+'"/>';
+    });
+    return s;
+  }
+  function couple(cx,cy){
+    const g=P(cx-0.24,cy,0), b=P(cx+0.24,cy,0);
+    let s='<g><title>Carlos</title><rect x="'+(g[0]-5).toFixed(1)+'" y="'+(g[1]-24).toFixed(1)+'" width="10" height="19" rx="3.5" fill="#3c414d"/><circle cx="'+g[0].toFixed(1)+'" cy="'+(g[1]-29).toFixed(1)+'" r="5" fill="#e2b08a"/></g>';
+    s+='<g><title>Camila</title><path d="M'+(b[0]-7).toFixed(1)+' '+b[1].toFixed(1)+' L'+(b[0]+7).toFixed(1)+' '+b[1].toFixed(1)+' L'+(b[0]+2.5).toFixed(1)+' '+(b[1]-19).toFixed(1)+' L'+(b[0]-2.5).toFixed(1)+' '+(b[1]-19).toFixed(1)+' Z" fill="#ffffff" stroke="#e8ddc5" stroke-width="1"/><circle cx="'+b[0].toFixed(1)+'" cy="'+(b[1]-24).toFixed(1)+'" r="5" fill="#e8bb90"/></g>';
+    return s;
+  }
+  function gazebo(){
+    const x0=10.6,y0=15.5,x1=13.4,y1=18.3,hz=92,ap=140,pw=0.09;
+    const post=p=>box(p[0]-pw,p[1]-pw,p[0]+pw,p[1]+pw,0,hz,{t:"#efe6d2",r:"#cfc3a8",l:"#dfd3b8"});
+    const ps=[[x0,y0],[x1,y0],[x0,y1],[x1,y1]].sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
+    let s=post(ps[0])+post(ps[1])+post(ps[2]);
+    s+=couple(12,17.05);
+    s+=post(ps[3]);
+    const e=0.3;
+    const A=P(x0-e,y0-e,hz),B=P(x1+e,y0-e,hz),C=P(x1+e,y1+e,hz),D=P(x0-e,y1+e,hz),R=P(12,16.9,ap);
+    s+=poly([A,B,R],"#e8dabb","#b8a377")+poly([A,D,R],"#dccba7","#b8a377")
+      +poly([B,C,R],"#d2bf97","#b8a377")+poly([D,C,R],"#c8b489","#b8a377");
+    return s;
+  }
+  function strand(A,B,sag,n){
+    const M=[(A[0]+B[0])/2,(A[1]+B[1])/2+sag];
+    let s='<path d="M'+A[0].toFixed(1)+' '+A[1].toFixed(1)+' Q'+M[0].toFixed(1)+' '+M[1].toFixed(1)+' '+B[0].toFixed(1)+' '+B[1].toFixed(1)+'" fill="none" stroke="#a98a52" stroke-width="1.4" opacity="0.75"/>';
+    for(let i=1;i<n;i++){
+      const t=i/n,u=1-t;
+      const x=u*u*A[0]+2*u*t*M[0]+t*t*B[0], y=u*u*A[1]+2*u*t*M[1]+t*t*B[1]+3.5;
+      s+='<circle class="bulb" style="animation-delay:'+(i*0.21).toFixed(2)+'s" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.6" fill="#f2bf5e"/>';
+    }
+    return s;
+  }
+  function badge(anchor,text,color,view){
+    const w=text.length*9+38,h=34,bx=anchor[0],by=anchor[1]-h/2;
+    pts.push([bx-w/2,by-h/2-6],[bx+w/2,by+h]);
+    return '<g class="zone-badge" data-nav="'+view+'">'
+      +'<line x1="'+bx.toFixed(1)+'" y1="'+(by+h/2).toFixed(1)+'" x2="'+bx.toFixed(1)+'" y2="'+(by+h/2+16).toFixed(1)+'" stroke="'+color+'" stroke-width="2.4"/>'
+      +'<rect x="'+(bx-w/2).toFixed(1)+'" y="'+(by-h/2).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h+'" rx="'+(h/2)+'" fill="'+color+'" stroke="#fffdf6" stroke-width="2.5"/>'
+      +'<text x="'+bx.toFixed(1)+'" y="'+(by+6).toFixed(1)+'" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff" font-family="Georgia,serif">'+text+'</text></g>';
+  }
+
+  /* ---- elementos con profundidad (algoritmo del pintor) ---- */
+  const items=[];
+  const add=(d,g,svg)=>items.push({d,g,svg});
+
+  // casita del patio (junto a la piscina)
+  add(10.4,null,(function(){
+    let s=box(0.8,6.4,4.6,9.0,0,76,{t:"#8b9199",r:"#6f757e",l:"#7d838c"});
+    s+=box(0.62,6.22,4.78,9.18,76,90,{t:"#737983",r:"#5c626b",l:"#69707a"});
+    // puerta mirando a la piscina
+    s+=poly([P(2.3,9.0,52),P(3.1,9.0,52),P(3.1,9.0,0),P(2.3,9.0,0)],"#6f5238","#5a4029",1.2);
+    return '<g><title>Casita del patio</title>'+s+'</g>';})());
+  // setos
+  add(15.3,null,box(5,-0.7,26.5,0.15,0,42,{t:"#5d8146",r:"#43613c",l:"#527241"}));
+  add(9.6,null,box(-0.7,4,0.1,16,0,36,{t:"#5d8146",r:"#43613c",l:"#527241"}));
+  // árboles
+  [[0.4,4.6,0.9],[24.9,6.6,1.25],[0.7,17.4,0.9],[2.2,18.8,1.05],[6.3,19.3,1.15],
+   [11,19.6,0.8],[16.5,19.4,0.95],[21,19.2,1.05],[25.6,18.6,1.2]]
+    .forEach(t=>add(t[0]+t[1],null,tree(t[0],t[1],t[2])));
+  // casa
+  add(33.5,null,(function(){
+    const H=112;
+    let s=box(16,8,26,17,0,H,{t:"#b9bec6",r:"#c7ccd3",l:"#dde2e8"});
+    const winY=(x0,z0,w,h)=>poly([P(x0,17,z0+h),P(x0+w,17,z0+h),P(x0+w,17,z0),P(x0,17,z0)],"#bcd8e6","#f6fbfd",1.6);
+    s+=winY(17.1,44,1.5,32)+winY(19.4,44,1.5,32);
+    s+=poly([P(22.4,17,58),P(23.6,17,58),P(23.6,17,0),P(22.4,17,0)],"#6f5238","#5a4029",1.4);
+    const winX=(y0,z0,w,h)=>poly([P(26,y0,z0+h),P(26,y0+w,z0+h),P(26,y0+w,z0),P(26,y0,z0)],"#aecbd9","#eef6fa",1.4);
+    s+=winX(9.6,44,1.4,30)+winX(12.2,44,1.4,30)+winX(14.6,44,1.4,30);
+    const A=P(15.5,7.5,H),B=P(26.5,7.5,H),C=P(26.5,17.5,H),D=P(15.5,17.5,H);
+    const R1=P(18.8,12.5,H+66),R2=P(23.2,12.5,H+66);
+    s+=poly([A,B,R2,R1],"#6d737c","#5c626b")+poly([A,D,R1],"#767c85","#5c626b")
+      +poly([B,C,R2],"#7d838d","#5c626b")+poly([D,C,R2,R1],"#8b929c","#6a707a");
+    s+=box(23.5,9.7,24.4,10.6,H+34,H+92,{t:"#9aa0a8",r:"#767c85",l:"#899098"});
+    return s;})());
+  // cerca con puertica (entre la carpa y la casa, da acceso al patio trasero)
+  add(31.9,null,(function(){
+    const rail=(xa,xb,z)=>poly([P(xa,17.15,z+4),P(xb,17.15,z+4),P(xb,17.15,z),P(xa,17.15,z)],"#c9a06a","#b58a54",1);
+    let s="";
+    [13.55,16.0].forEach(px=>{s+=box(px-0.05,17.1,px+0.05,17.2,0,30,{t:"#b58a54",r:"#96703f",l:"#a67d49"});});
+    s+=rail(13.6,14.3,20)+rail(13.6,14.3,8)+rail(15.3,15.95,20)+rail(15.3,15.95,8);
+    let g='<g><title>Puertica — acceso al patio trasero</title>';
+    [14.35,15.25].forEach(px=>{g+=box(px-0.045,17.1,px+0.045,17.2,0,26,{t:"#c9a052",r:"#a8813c",l:"#b98f47"});});
+    g+=rail(14.4,15.2,18)+rail(14.4,15.2,6);
+    const q1=P(14.4,17.15,6),q2=P(15.2,17.15,18);
+    g+='<path d="M'+q1[0].toFixed(1)+' '+q1[1].toFixed(1)+' L'+q2[0].toFixed(1)+' '+q2[1].toFixed(1)+'" stroke="#a8813c" stroke-width="2" fill="none"/></g>';
+    return s+g;})());
+  // el carro de la casa en la entrada (la carpa es su parking)
+  add(41,null,(function(){
+    let s='<g><title>Entrada de carros — la carpa es el parking de la casa</title>';
+    s+=box(21.6,17.5,24.2,18.8,6,30,{t:"#eec83e",r:"#c39f1f",l:"#dcb52e"});
+    s+=box(22.2,17.65,23.6,18.65,30,48,{t:"#f4d968",r:"#8fa7b8",l:"#a9c0cf"});
+    [[21.9,17.55],[21.9,18.75],[23.9,17.55],[23.9,18.75]].forEach(w=>{
+      const q=P(w[0],w[1],4);
+      s+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="4.5" fill="#3a3f47"/>';
+    });
+    return s+'</g>';})());
+
+  // ---- CENA: mesa en U + sillas (grupo g-cena) ----
+  // Lado corto (mesa principal) vertical, paralelo a la casita; brazos hacia la casa.
+  const Lc=state.layout.cena, ac=validAssign("cena");
+  const TBL={t:"#f4edda",r:"#9a7947",l:"#b18f5c"};
+  const hy0=4.6,hy1=8.9;
+  {const n=8,dy=(hy1-hy0)/n;
+   for(let i=0;i<n;i++)add(7.15+hy0+i*dy+dy/2,"cena",box(6.8,hy0+i*dy,7.5,hy0+(i+1)*dy,0,20,TBL));}
+  const armLen=m=>0.35+m*0.53;
+  {const len=armLen(Lc.left),n=Math.max(1,Lc.left),dx=len/n;
+   for(let i=0;i<n;i++)add(7.5+i*dx+dx/2+4.95,"cena",box(7.5+i*dx,4.6,7.5+(i+1)*dx,5.3,0,20,TBL));}
+  {const len=armLen(Lc.right),n=Math.max(1,Lc.right),dx=len/n;
+   for(let i=0;i<n;i++)add(7.5+i*dx+dx/2+8.55,"cena",box(7.5+i*dx,8.2,7.5+(i+1)*dx,8.9,0,20,TBL));}
+  for(let i=0;i<Lc.head;i++){
+    const cy=Lc.head>1?4.95+i*((8.55-4.95)/(Lc.head-1)):6.75;
+    add(6.35+cy,"cena",chr(6.35,cy,"W",ac["d-head-"+i]));
+  }
+  for(let j=0;j<Lc.left;j++){const cx=7.85+j*0.53;add(cx+4.15,"cena",chr(cx,4.15,"N",ac["d-left-"+j]));}
+  for(let j=0;j<Lc.right;j++){const cx=7.85+j*0.53;add(cx+9.35,"cena",chr(cx,9.35,"S",ac["d-right-"+j]));}
+
+  // ---- CEREMONIA: filas de sillas + carpa (grupo g-cer) ----
+  const Le=state.layout.ceremonia, ae=validAssign("ceremonia"), cs=0.62, gap=1.0;
+  const wL=(Le.leftCols-1)*cs, wR=(Le.rightCols-1)*cs, span=wL+gap+wR;
+  const x0c=12-span/2, xr=x0c+wL+gap;
+  for(let r=0;r<Le.leftRows;r++)for(let c2=0;c2<Le.leftCols;c2++){
+    const cx=x0c+c2*cs, cy=14.55-r*cs;
+    add(cx+cy,"cer",chr(cx,cy,"N",ae["c-left-"+(r*Le.leftCols+c2)]));
+  }
+  for(let r=0;r<Le.rightRows;r++)for(let c2=0;c2<Le.rightCols;c2++){
+    const cx=xr+c2*cs, cy=14.55-r*cs;
+    add(cx+cy,"cer",chr(cx,cy,"N",ae["c-right-"+(r*Le.rightCols+c2)]));
+  }
+  add(28.9,"cer",'<g><title>La carpa de los novios (el carport de la casa)</title>'+gazebo()+'</g>');
+
+  /* ---- capas base ---- */
+  let base="";
+  base+=box(-0.5,-0.5,26.5,20.5,-14,0,{t:"#8fa768",r:"#6e5a3d",l:"#7d6647"});
+  base+='<polygon points="'+F([P(-0.5,-0.5,0.1),P(26.5,-0.5,0.1),P(26.5,20.5,0.1),P(-0.5,20.5,0.1)])+'" fill="url(#mow)" opacity="0.4"/>';
+  base+=poly([P(1,3.8,0.4),P(14.5,3.8,0.4),P(14.5,10.2,0.4),P(11.2,14.6,0.4),P(2.6,14.6,0.4),P(1,12,0.4)],"#d3c7aa","#c2b493",2);
+  // piso de la carpa (carport) + entrada de carros desde la calle
+  base+=poly([P(10.5,15.4,0.3),P(13.5,15.4,0.3),P(13.5,18.4,0.3),P(10.5,18.4,0.3)],"#cfcabf","#bdb7a9",2);
+  base+=poly([P(13.5,17.3,0.3),P(26.5,17.3,0.3),P(26.5,19.1,0.3),P(13.5,19.1,0.3)],"#c8c2b5","#b6b0a3",2);
+  base+=poly([P(13.6,17.75,0.5),P(26.4,17.75,0.5),P(26.4,17.95,0.5),P(13.6,17.95,0.5)],"#bab4a6","#bab4a6",1);
+  base+=poly([P(13.6,18.45,0.5),P(26.4,18.45,0.5),P(26.4,18.65,0.5),P(13.6,18.65,0.5)],"#bab4a6","#bab4a6",1);
+  // caminito de piedras desde la puertica hacia el patio
+  [[14.55,16.5],[14.0,15.6],[13.5,14.75]].forEach(q=>{
+    base+='<polygon points="'+F(ell(q[0],q[1],0.42,0.3,0.5))+'" fill="#d8cdb2" stroke="#c6b996" stroke-width="1"/>';
+  });
+  base+='<polygon points="'+F(ell(4.3,11.4,2.75,2.2,0.5))+'" fill="#e9e1cc" stroke="#d9cfb4" stroke-width="2"/>';
+  base+='<polygon points="'+F(ell(6.0,12.7,1.7,1.35,0.5))+'" fill="#e9e1cc" stroke="#d9cfb4" stroke-width="2"/>';
+  base+='<polygon points="'+F(ell(4.3,11.4,2.45,1.95,0.7))+'" fill="#9fd2db"/>';
+  base+='<polygon points="'+F(ell(6.0,12.7,1.45,1.1,0.7))+'" fill="#9fd2db"/>';
+  base+='<g class="water-glint"><polygon points="'+F(ell(3.6,11.0,0.75,0.4,0.9))+'" fill="#ffffff" opacity="0.4"/><polygon points="'+F(ell(5.6,12.5,0.55,0.3,0.9))+'" fill="#ffffff" opacity="0.35"/></g>';
+
+  // anillos de zona + pasillo con pétalos
+  const ringCena='<g class="g-cena"><polygon points="'+F(ell(9.75,6.75,4.2,3.3,0.9))+'" fill="rgba(217,154,31,.10)" stroke="#d99a1f" stroke-width="2.6" stroke-dasharray="10 8" stroke-linejoin="round"/></g>';
+  const aisleX=x0c+wL+gap/2;
+  let runner='<g class="g-cer"><polygon points="'+F(ell(12,15.3,span/2+1.6,3.5,0.9))+'" fill="rgba(207,82,48,.08)" stroke="#cf5230" stroke-width="2.6" stroke-dasharray="10 8" stroke-linejoin="round"/>';
+  runner+=poly([P(aisleX-0.3,12.2,1),P(aisleX+0.3,12.2,1),P(aisleX+0.3,15.7,1),P(aisleX-0.3,15.7,1)],"#f7f0e2","#eadfc6",1.5);
+  for(let i=0;i<10;i++){
+    const q=P(aisleX+(i%2?0.45:-0.45),12.5+i*0.33,1.2);
+    runner+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="2.4" fill="'+(i%3?"#e8a4b8":"#f3c9d5")+'"/>';
+  }
+  runner+='</g>';
+
+  /* ---- ordenar y componer ---- */
+  items.sort((a,b)=>a.d-b.d);
+  let mid="";
+  items.forEach(it=>{ mid += it.g?('<g class="g-'+it.g+'">'+it.svg+'</g>'):it.svg; });
+
+  let post="";
+  post+=strand(P(12,16.9,138),P(16.2,16.4,112),30,9);
+  post+=strand(P(4.6,6.5,88),P(10.7,15.6,92),58,15);
+
+  const nCer=Object.keys(ae).length, nCena=Object.keys(ac).length;
+  post+=badge(P(9.75,6.75,172),"\u{1F37D} Cena · "+nCena,"#d99a1f","cena");
+  post+=badge(P(12,17,228),"\u{1F492} Ceremonia · "+nCer,"#cf5230","ceremonia");
+
+  const pad=42;
+  let mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
+  pts.forEach(p=>{mnx=Math.min(mnx,p[0]);mny=Math.min(mny,p[1]);mxx=Math.max(mxx,p[0]);mxy=Math.max(mxy,p[1]);});
+  return '<svg class="yard mode-'+state.lugarMode+'" viewBox="0 0 '+(mxx-mnx+pad*2).toFixed(0)+' '+(mxy-mny+pad*2).toFixed(0)+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Patio en 3D">'
+    +'<defs><pattern id="mow" width="76" height="76" patternUnits="userSpaceOnUse" patternTransform="rotate(26.5)"><rect width="38" height="76" fill="#87a05e"/></pattern></defs>'
+    +'<g transform="translate('+(-mnx+pad).toFixed(1)+','+(-mny+pad).toFixed(1)+')">'
+    +base+ringCena+runner+mid+post+'</g></svg>';
+}
+
+function renderLugar(){
+  document.querySelectorAll('.seg[data-seg="lugar"] button').forEach(b=>{
+    b.classList.toggle("on",b.dataset.mode===state.lugarMode);
+  });
+  const c=el("yardScene");
+  c.innerHTML=yardSVG();
+  c.querySelectorAll("[data-nav]").forEach(n=>n.addEventListener("click",()=>{
+    state.view=n.dataset.nav; state.selected=null; save(); render();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }));
+}
+
+function renderPanel(){
+  const p=el("panel");
+  if(!p.classList.contains("show") || !state.layout[state.view]){ p.innerHTML=""; return; }
+  const view=state.view;
+  const L=state.layout[view];
+  let html='<h3>Ajustar '+(view==="cena"?"la mesa en U":"la ceremonia")+'</h3><div class="steppers">';
+  const stepper=(key,label,val)=>`
+    <div class="stp"><label>${label}</label>
+      <div class="ctl">
+        <button data-dec="${key}">−</button><span id="v-${key}">${val}</span><button data-inc="${key}">＋</button>
+      </div>
+    </div>`;
+  if(view==="cena"){
+    html+=stepper("left","Brazo izquierdo",L.left);
+    html+=stepper("right","Brazo derecho",L.right);
+    html+=stepper("head","Mesa principal",L.head);
+  }else{
+    html+=stepper("leftCols","Izq. columnas",L.leftCols);
+    html+=stepper("leftRows","Izq. filas",L.leftRows);
+    html+=stepper("rightCols","Der. columnas",L.rightCols);
+    html+=stepper("rightRows","Der. filas",L.rightRows);
+  }
+  html+='</div>';
+  p.innerHTML=html;
+  p.querySelectorAll("[data-inc]").forEach(b=>b.addEventListener("click",()=>stepLayout(b.dataset.inc,1)));
+  p.querySelectorAll("[data-dec]").forEach(b=>b.addEventListener("click",()=>stepLayout(b.dataset.dec,-1)));
+}
+function stepLayout(key,delta){
+  const view=state.view;
+  const L=state.layout[view];
+  const min = (key==="leftCols"||key==="rightCols")?1:0;
+  L[key]=Math.max(min, Math.min(20, L[key]+delta));
+  save(); render();
+}
+
+function renderTabs(){
+  el("tabc").textContent="· "+Object.keys(validAssign("ceremonia")).length;
+  el("tabd").textContent="· "+Object.keys(validAssign("cena")).length;
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.view===state.view);
+  });
+  el("view-lugar").classList.toggle("active",state.view==="lugar");
+  el("view-ceremonia").classList.toggle("active",state.view==="ceremonia");
+  el("view-cena").classList.toggle("active",state.view==="cena");
+
+  // Controles que sólo aplican al modo de edición (Plano) de ceremonia/cena
+  const editable = (state.view==="ceremonia"||state.view==="cena") && !state.threeD[state.view];
+  el("poolCard").style.display = editable ? "" : "none";
+  el("btnPanel").style.display = editable ? "" : "none";
+  el("btnAdd").style.display   = editable ? "" : "none";
+  if(!editable) el("panel").classList.remove("show");
+}
+
+function renderSelBar(){
+  const bar=el("selbar");
+  if(state.selected){
+    const g=guestById(state.selected);
+    if(g){ bar.classList.add("show"); el("selName").textContent=g.name; return; }
+  }
+  bar.classList.remove("show");
+}
+
+function render(){
+  renderTabs();
+  renderSelBar();
+  if(state.view==="lugar"){ renderLugar(); }
+  else if(state.view==="ceremonia"){ renderPool(); renderCeremonia(); }
+  else if(state.view==="cena"){ renderPool(); renderCena(); }
+  renderPanel();
+}
+
+/* ------------------------------------------------------------------ */
+/*  Invitados: añadir / eliminar                                      */
+/* ------------------------------------------------------------------ */
+function addGuest(){
+  const name=prompt("Nombre del invitado:");
+  if(!name || !name.trim()) return;
+  const ids=state.guests.map(g=>parseInt(g.id.slice(1))||0);
+  const nid="g"+((Math.max(0,...ids))+1);
+  state.guests.push({id:nid,name:name.trim()});
+  save(); render();
+}
+function removeGuest(gid){
+  const g=guestById(gid);
+  if(!g) return;
+  if(!confirm('¿Eliminar a "'+g.name+'" de la lista? Se quitará de ambas distribuciones.')) return;
+  state.guests=state.guests.filter(x=>x.id!==gid);
+  for(const v of ["ceremonia","cena"]){
+    const a=state.assign[v];
+    for(const k in a){ if(a[k]===gid) delete a[k]; }
+  }
+  if(state.selected===gid) state.selected=null;
+  save(); render();
+}
+
+/* ------------------------------------------------------------------ */
+/*  Eventos globales                                                  */
+/* ------------------------------------------------------------------ */
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{ state.view=t.dataset.view; state.selected=null; save(); render(); });
+});
+el("btnAdd").addEventListener("click",addGuest);
+el("btnPrint").addEventListener("click",()=>window.print());
+el("btnPanel").addEventListener("click",()=>{ el("panel").classList.toggle("show"); render(); });
+el("btnReset").addEventListener("click",()=>{
+  if(confirm("¿Reiniciar toda la distribución a los valores iniciales? Se perderán tus cambios.")){
+    state=defaultState(); save(); render();
+  }
+});
+el("selCancel").addEventListener("click",()=>{ state.selected=null; render(); });
+
+// toggles: Plano/Vista 3D (ceremonia, cena) y Ceremonia/Cena (lugar)
+document.querySelectorAll(".seg").forEach(seg=>{
+  const v=seg.dataset.seg;
+  seg.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(v==="lugar"){ state.lugarMode=b.dataset.mode; }
+      else{ state.threeD[v]=(b.dataset.mode==="3d"); }
+      state.selected=null; save(); render();
+    });
+  });
+});
+
+// arrastrar de vuelta al pool
+const pool=el("pool");
+pool.addEventListener("dragover",ev=>{ev.preventDefault();pool.classList.add("dropok");});
+pool.addEventListener("dragleave",()=>pool.classList.remove("dropok"));
+pool.addEventListener("drop",ev=>{
+  ev.preventDefault();pool.classList.remove("dropok");
+  const gid=ev.dataTransfer.getData("text/plain");
+  if(gid) unassign(state.view,gid);
+});
+
+// tocar fondo = deseleccionar
+document.addEventListener("click",ev=>{
+  if(state.selected && !ev.target.closest(".seat,.chip,.selbar")){
+    state.selected=null; renderSelBar();
+    document.querySelectorAll(".chip.selected").forEach(c=>c.classList.remove("selected"));
+    document.querySelectorAll(".seat.target").forEach(c=>c.classList.remove("target"));
+  }
+});
+
+render();
+</script>
+</body>
+</html>
