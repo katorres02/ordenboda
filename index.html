@@ -501,7 +501,7 @@
 const NAMES = [
   "Olga","Elizabeth","Juan Carlos","Mariel","Alika","Duhamel","Tom","Elodie",
   "Paola","Andrés","Sofía","Charles","Dayene","Vitor","Nazanin","Melissa",
-  "Yoan","Lenyn","Daniella","Estefanía","Ben","Alejandra","Fernando",
+  "Yoan","Lennyn","Daniella","Estefanía","Ben","Alejandra","Fernando",
   "Camila","Carlos"
 ];
 
@@ -527,7 +527,7 @@ function defaultState(){
   // Sección derecha (2 columnas):
   const cerRight = [
     "Melissa","Yoan",       // 16 17
-    "Lenyn","Daniella",     // 18 19
+    "Lennyn","Daniella",    // 18 19
     "Alejandra","Fernando", // 22 23
     "Estefanía","Ben"       // 20 21
   ];
@@ -537,9 +537,9 @@ function defaultState(){
   cerRight.forEach((n,i)=>{ if(n) cerAssign["c-right-"+i]=byName[n]; });
 
   // ----- Cena default (mesa en U según boceto) -----
-  const cenaLeft = ["Mariel","Paola","Andrés","Nazanin","Alika","Duhamel","Sofía","Charles","Tom","Elodie"];
-  const cenaRight= ["Yoan","Daniella","Melissa","Lenyn","Ben","Estefanía","Alejandra","Fernando","Vitor","Dayene"];
-  const cenaHead = ["Olga","Camila","Carlos","Elizabeth","Juan Carlos"];
+  const cenaLeft = ["Fernando","Alejandra","Estefanía","Ben","Melissa","Daniella","Lennyn","Yoan","Vitor","Dayene"];
+  const cenaRight= ["Mariel","Paola","Andrés","Nazanin","Alika","Duhamel","Sofía","Charles","Tom","Elodie"];
+  const cenaHead = ["Juan Carlos","Elizabeth","Carlos","Camila","Olga"];
   const cenaAssign = {};
   cenaLeft.forEach((n,i)=>{ cenaAssign["d-left-"+i]=byName[n]; });
   cenaRight.forEach((n,i)=>{ cenaAssign["d-right-"+i]=byName[n]; });
