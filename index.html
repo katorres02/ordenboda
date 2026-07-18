@@ -193,6 +193,21 @@
   .seat.empty .num{background:#d8cbb4}
   .seat .place{font-size:20px;color:#cdbfa6;font-weight:300;line-height:1}
 
+  /* ---------- CENA: mesa cuadrada ---------- */
+  .sq-grid{display:flex;flex-direction:column;align-items:center;gap:10px;width:max-content;margin:0 auto}
+  .sq-headline{
+    text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold-deep);margin-bottom:2px;
+  }
+  .sq-row{display:flex;gap:10px;justify-content:center}
+  .sq-mid{display:flex;gap:10px;align-items:stretch}
+  .sq-col{display:flex;flex-direction:column;gap:10px}
+  .sq-table{
+    flex:1;min-width:150px;border-radius:12px;
+    background:linear-gradient(180deg,var(--wood),var(--wood-deep));
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,.14);
+  }
+
   /* ---------- CENA: U shape ---------- */
   .u-grid{
     display:grid;
@@ -445,7 +460,7 @@
       <div id="yardScene"></div>
       <div class="map-legend no-print">
         <span class="lg"><span class="sw" style="border-color:#cf5230;background:rgba(207,82,48,.14)"></span> Couple's canopy — ceremony</span>
-        <span class="lg"><span class="sw" style="border-color:#d99a1f;background:rgba(217,154,31,.14)"></span> U-shaped table — dinner</span>
+        <span class="lg"><span class="sw" style="border-color:#d99a1f;background:rgba(217,154,31,.14)"></span> Square table — dinner</span>
       </div>
       <p class="map-note no-print">Tap a zone label to edit its seating. Chairs move between ceremony and dinner since space is limited.</p>
     </div>
@@ -482,7 +497,7 @@
         </div>
       </div>
       <div id="cenaFlat">
-        <div class="stage-title">U-shaped table</div>
+        <div class="stage-title">Square table</div>
         <div class="u-grid" id="uGrid"></div>
       </div>
       <div class="iso-wrap" id="cenaIso" style="display:none"></div>
@@ -515,7 +530,7 @@ function defaultState(){
   // Layout config
   const layout = {
     ceremonia:{leftCols:5,leftRows:3,rightCols:5,rightRows:3},
-    cena:{left:10,right:10,head:5}
+    cena:{head:4,left:9,right:9,bottom:3}
   };
 
   // ----- Ceremonia default (según boceto de números en círculo) -----
@@ -537,13 +552,15 @@ function defaultState(){
   cerRight.forEach((n,i)=>{ if(n) cerAssign["c-right-"+i]=byName[n]; });
 
   // ----- Cena default (mesa en U según boceto) -----
-  const cenaLeft = ["Fernando","Alejandra","Estefanía","Ben","Lennyn","Daniella","Melissa","Yoan","Vitor","Dayene"];
-  const cenaRight= ["Mariel","Paola","Andrés","Nazanin","Alika","Duhamel","Sofía","Charles","Tom","Elodie"];
-  const cenaHead = ["Juan Carlos","Elizabeth","Carlos","Camila","Olga"];
+  const cenaHead  = ["Elizabeth","Carlos","Camila","Olga"];
+  const cenaLeft  = ["Juan Carlos","Fernando","Alejandra","Estefanía","Ben","Lennyn","Daniella","Melissa","Yoan"];
+  const cenaRight = ["Mariel","Paola","Andrés","Nazanin","Alika","Duhamel","Sofía","Charles","Tom"];
+  const cenaBottom= ["Vitor","Dayene","Elodie"];
   const cenaAssign = {};
   cenaLeft.forEach((n,i)=>{ cenaAssign["d-left-"+i]=byName[n]; });
   cenaRight.forEach((n,i)=>{ cenaAssign["d-right-"+i]=byName[n]; });
   cenaHead.forEach((n,i)=>{ cenaAssign["d-head-"+i]=byName[n]; });
+  cenaBottom.forEach((n,i)=>{ cenaAssign["d-bottom-"+i]=byName[n]; });
 
   return {
     v:DEFAULTS_VERSION,
@@ -560,7 +577,7 @@ function defaultState(){
 /*  Estado + persistencia                                             */
 /* ------------------------------------------------------------------ */
 const KEY="ordenboda-v1";
-const DEFAULTS_VERSION=2; // bump this when the published seating changes
+const DEFAULTS_VERSION=3; // bump this when the published seating changes
 const AUTH_KEY="ordenboda-editor";
 const EDITOR_PIN="1445"; // <-- change this PIN to your own
 function isEditor(){ return localStorage.getItem(AUTH_KEY)==="yes"; }
@@ -600,6 +617,7 @@ function seatIds(view){
     for(let i=0;i<L.left;i++) ids.push("d-left-"+i);
     for(let i=0;i<L.right;i++) ids.push("d-right-"+i);
     for(let i=0;i<L.head;i++) ids.push("d-head-"+i);
+    for(let i=0;i<(L.bottom||0);i++) ids.push("d-bottom-"+i);
   }
   return ids;
 }
@@ -775,30 +793,27 @@ function renderCena(){
   const L=state.layout.cena;
   const grid=el("uGrid");
   grid.innerHTML="";
+  grid.className="sq-grid";
 
-  const armL=document.createElement("div");armL.className="arm arm-left";
-  for(let i=0;i<L.left;i++) armL.appendChild(makeSeat("cena","d-left-"+i,i+1));
-
-  const armR=document.createElement("div");armR.className="arm arm-right";
-  for(let i=0;i<L.right;i++) armR.appendChild(makeSeat("cena","d-right-"+i,i+1));
-
-  const barL=document.createElement("div");barL.className="bar bar-left";
-  const barR=document.createElement("div");barR.className="bar bar-right";
-  const barB=document.createElement("div");barB.className="bar bar-bottom";
-  const lab=document.createElement("div");lab.className="u-label";lab.textContent="Dance floor";
-
-  const head=document.createElement("div");head.className="head";
-  const hl=document.createElement("div");hl.className="headline";hl.textContent="Main table";
-  head.appendChild(hl);
+  const head=document.createElement("div");head.className="sq-row";
+  const hl=document.createElement("div");hl.className="sq-headline";hl.textContent="Head side · couple";
   for(let i=0;i<L.head;i++) head.appendChild(makeSeat("cena","d-head-"+i));
 
-  grid.appendChild(armL);
-  grid.appendChild(barL);
-  grid.appendChild(lab);
-  grid.appendChild(barR);
-  grid.appendChild(armR);
-  grid.appendChild(barB);
+  const mid=document.createElement("div");mid.className="sq-mid";
+  const colL=document.createElement("div");colL.className="sq-col";
+  for(let j=0;j<L.left;j++) colL.appendChild(makeSeat("cena","d-left-"+j,j+1));
+  const tbl=document.createElement("div");tbl.className="sq-table";
+  const colR=document.createElement("div");colR.className="sq-col";
+  for(let j=0;j<L.right;j++) colR.appendChild(makeSeat("cena","d-right-"+j,j+1));
+  mid.appendChild(colL);mid.appendChild(tbl);mid.appendChild(colR);
+
+  const bot=document.createElement("div");bot.className="sq-row";
+  for(let i=0;i<(L.bottom||0);i++) bot.appendChild(makeSeat("cena","d-bottom-"+i,i+1));
+
+  grid.appendChild(hl);
   grid.appendChild(head);
+  grid.appendChild(mid);
+  grid.appendChild(bot);
 }
 
 /* ------------------------------------------------------------------ */
@@ -860,15 +875,17 @@ function iso3D(view){
   let seats=[], tables=[], canopy="";
 
   if(view==="cena"){
-    const L=state.layout.cena;
-    const lx0=0,lx1=0.7, rx0=3.4,rx1=4.1, tz0=0,tz1=26;
-    const armL=L.left, armR=L.right, headN=L.head;
-    tables.push(["head",0,-0.7,rx1,0,tz0,tz1]);
-    tables.push(["left",lx0,0,lx1,armL,tz0,tz1]);
-    tables.push(["right",rx0,0,rx1,armR,tz0,tz1]);
-    for(let i=0;i<headN;i++){ const cx=0.35+(headN>1?i*(3.4/(headN-1)):1.7); seats.push({cx,cy:-1.25,back:"N",id:"d-head-"+i}); }
-    for(let j=0;j<armL;j++) seats.push({cx:-0.85,cy:0.55+j,back:"W",id:"d-left-"+j});
-    for(let j=0;j<armR;j++) seats.push({cx:4.95,cy:0.55+j,back:"E",id:"d-right-"+j});
+    const L=state.layout.cena, bN=L.bottom||0;
+    const sp=0.95;
+    const W=Math.max(L.head,bN,1)*sp+0.5;
+    const Lg=Math.max(L.left,L.right,1)*sp+0.5;
+    const nx=Math.max(1,Math.round(W)), ny=Math.max(1,Math.round(Lg));
+    for(let i=0;i<nx;i++)for(let j=0;j<ny;j++)
+      tables.push(["seg", i*W/nx, j*Lg/ny, (i+1)*W/nx, (j+1)*Lg/ny, 0, 26]);
+    for(let i=0;i<L.head;i++){ const cx=W/2+(i-(L.head-1)/2)*sp; seats.push({cx,cy:-0.6,back:"N",id:"d-head-"+i}); }
+    for(let i=0;i<bN;i++){ const cx=W/2+(i-(bN-1)/2)*sp; seats.push({cx,cy:Lg+0.6,back:"S",id:"d-bottom-"+i}); }
+    for(let j=0;j<L.left;j++){ const cy=Lg/2+(j-(L.left-1)/2)*sp; seats.push({cx:-0.6,cy,back:"W",id:"d-left-"+j}); }
+    for(let j=0;j<L.right;j++){ const cy=Lg/2+(j-(L.right-1)/2)*sp; seats.push({cx:W+0.6,cy,back:"E",id:"d-right-"+j}); }
   } else {
     const L=state.layout.ceremonia;
     const step=1.05, aisle=1.5;
@@ -1064,24 +1081,22 @@ function yardSVG(){
     });
     return s+'</g>';})());
 
-  // ---- CENA: mesa en U + sillas (grupo g-cena) ----
-  // Lado corto (mesa principal) vertical, paralelo a la casita; brazos hacia la casa.
-  const Lc=state.layout.cena, ac=validAssign("cena");
+  // ---- CENA: mesa cuadrada + sillas (grupo g-cena) ----
+  // Cabecera (novios) al oeste, paralela a la casita; laterales largos al N y S.
+  const Lc=state.layout.cena, ac=validAssign("cena"), bN=Lc.bottom||0;
   const TBL={t:"#f4edda",r:"#9a7947",l:"#b18f5c"};
-  const hy0=4.6,hy1=8.9;
-  {const n=8,dy=(hy1-hy0)/n;
-   for(let i=0;i<n;i++)add(7.15+hy0+i*dy+dy/2,"cena",box(6.8,hy0+i*dy,7.5,hy0+(i+1)*dy,0,20,TBL));}
-  const armLen=m=>0.35+m*0.53;
-  {const len=armLen(Lc.left),n=Math.max(1,Lc.left),dx=len/n;
-   for(let i=0;i<n;i++)add(7.5+i*dx+dx/2+4.95,"cena",box(7.5+i*dx,4.6,7.5+(i+1)*dx,5.3,0,20,TBL));}
-  {const len=armLen(Lc.right),n=Math.max(1,Lc.right),dx=len/n;
-   for(let i=0;i<n;i++)add(7.5+i*dx+dx/2+8.55,"cena",box(7.5+i*dx,8.2,7.5+(i+1)*dx,8.9,0,20,TBL));}
-  for(let i=0;i<Lc.head;i++){
-    const cy=Lc.head>1?4.95+i*((8.55-4.95)/(Lc.head-1)):6.75;
-    add(6.35+cy,"cena",chr(6.35,cy,"W",ac["d-head-"+i]));
-  }
-  for(let j=0;j<Lc.left;j++){const cx=7.85+j*0.53;add(cx+4.15,"cena",chr(cx,4.15,"N",ac["d-left-"+j]));}
-  for(let j=0;j<Lc.right;j++){const cx=7.85+j*0.53;add(cx+9.35,"cena",chr(cx,9.35,"S",ac["d-right-"+j]));}
+  const sp=0.53, tx0=7.0, ty0=5.2;
+  const tW=Math.max(Lc.left,Lc.right,1)*sp+0.3;
+  const tH=Math.max(Lc.head,bN,1)*sp+0.3;
+  {const nx=Math.max(1,Math.round(tW/0.6)), ny=Math.max(1,Math.round(tH/0.6));
+   for(let i=0;i<nx;i++)for(let j=0;j<ny;j++){
+     const x0=tx0+i*tW/nx, y0=ty0+j*tH/ny;
+     add(x0+tW/nx/2+y0+tH/ny/2,"cena",box(x0,y0,x0+tW/nx,y0+tH/ny,0,20,TBL));
+   }}
+  for(let i=0;i<Lc.head;i++){const cy=ty0+tH/2+(i-(Lc.head-1)/2)*sp;add(tx0-0.45+cy,"cena",chr(tx0-0.45,cy,"W",ac["d-head-"+i]));}
+  for(let i=0;i<bN;i++){const cy=ty0+tH/2+(i-(bN-1)/2)*sp;add(tx0+tW+0.45+cy,"cena",chr(tx0+tW+0.45,cy,"E",ac["d-bottom-"+i]));}
+  for(let j=0;j<Lc.left;j++){const cx=tx0+tW/2+(j-(Lc.left-1)/2)*sp;add(cx+ty0-0.45,"cena",chr(cx,ty0-0.45,"N",ac["d-left-"+j]));}
+  for(let j=0;j<Lc.right;j++){const cx=tx0+tW/2+(j-(Lc.right-1)/2)*sp;add(cx+ty0+tH+0.45,"cena",chr(cx,ty0+tH+0.45,"S",ac["d-right-"+j]));}
 
   // ---- CEREMONIA: filas de sillas + carpa (grupo g-cer) ----
   const Le=state.layout.ceremonia, ae=validAssign("ceremonia"), cs=0.62, gap=1.0;
@@ -1118,7 +1133,7 @@ function yardSVG(){
   base+='<g class="water-glint"><polygon points="'+F(ell(3.6,11.0,0.75,0.4,0.9))+'" fill="#ffffff" opacity="0.4"/><polygon points="'+F(ell(5.6,12.5,0.55,0.3,0.9))+'" fill="#ffffff" opacity="0.35"/></g>';
 
   // anillos de zona + pasillo con pétalos
-  const ringCena='<g class="g-cena"><polygon points="'+F(ell(9.75,6.75,4.2,3.3,0.9))+'" fill="rgba(217,154,31,.10)" stroke="#d99a1f" stroke-width="2.6" stroke-dasharray="10 8" stroke-linejoin="round"/></g>';
+  const ringCena='<g class="g-cena"><polygon points="'+F(ell(9.5,6.4,4.0,2.7,0.9))+'" fill="rgba(217,154,31,.10)" stroke="#d99a1f" stroke-width="2.6" stroke-dasharray="10 8" stroke-linejoin="round"/></g>';
   const aisleX=x0c+wL+gap/2;
   let runner='<g class="g-cer"><polygon points="'+F(ell(12,15.3,span/2+1.6,3.5,0.9))+'" fill="rgba(207,82,48,.08)" stroke="#cf5230" stroke-width="2.6" stroke-dasharray="10 8" stroke-linejoin="round"/>';
   runner+=poly([P(aisleX-0.3,12.2,1),P(aisleX+0.3,12.2,1),P(aisleX+0.3,15.7,1),P(aisleX-0.3,15.7,1)],"#f7f0e2","#eadfc6",1.5);
@@ -1138,7 +1153,7 @@ function yardSVG(){
   post+=strand(P(4.6,6.5,88),P(10.7,15.6,92),58,15);
 
   const nCer=Object.keys(ae).length, nCena=Object.keys(ac).length;
-  post+=badge(P(9.75,6.75,172),"\u{1F37D} Dinner · "+nCena,"#d99a1f","cena");
+  post+=badge(P(9.5,6.4,172),"\u{1F37D} Dinner · "+nCena,"#d99a1f","cena");
   post+=badge(P(12,17,228),"\u{1F492} Ceremony · "+nCer,"#cf5230","ceremonia");
 
   const pad=42;
@@ -1167,7 +1182,7 @@ function renderPanel(){
   if(!p.classList.contains("show") || !state.layout[state.view]){ p.innerHTML=""; return; }
   const view=state.view;
   const L=state.layout[view];
-  let html='<h3>Adjust '+(view==="cena"?"the U-shaped table":"the ceremony")+'</h3><div class="steppers">';
+  let html='<h3>Adjust '+(view==="cena"?"the square table":"the ceremony")+'</h3><div class="steppers">';
   const stepper=(key,label,val)=>`
     <div class="stp"><label>${label}</label>
       <div class="ctl">
@@ -1175,9 +1190,10 @@ function renderPanel(){
       </div>
     </div>`;
   if(view==="cena"){
-    html+=stepper("left","Left arm",L.left);
-    html+=stepper("right","Right arm",L.right);
-    html+=stepper("head","Main table",L.head);
+    html+=stepper("head","Head side",L.head);
+    html+=stepper("left","Left side",L.left);
+    html+=stepper("right","Right side",L.right);
+    html+=stepper("bottom","Far side",L.bottom||0);
   }else{
     html+=stepper("leftCols","Left · columns",L.leftCols);
     html+=stepper("leftRows","Left · rows",L.leftRows);

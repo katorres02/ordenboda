@@ -12,7 +12,7 @@ works offline and deploys straight to GitHub Pages.
   canopy (the carport) with its driveway and garden gate. Toggle between the
   ceremony and dinner setups; hover a chair to see who sits there.
 - **Ceremony** tab: two seating sections with a center aisle, couple at the altar.
-- **Dinner** tab: U-shaped table — main table (5) on top, two arms going down.
+- **Dinner** tab: square table — couple side on top, two long sides, and the far side.
 - **Floor plan / 3D view** toggle on both seating tabs.
 - **Guest search**: type a name to highlight their seat in pistachio green.
 - **Editor sign-in**: only the signed-in editor can move guests, add/remove them,
