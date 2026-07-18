@@ -546,6 +546,7 @@ function defaultState(){
   cenaHead.forEach((n,i)=>{ cenaAssign["d-head-"+i]=byName[n]; });
 
   return {
+    v:DEFAULTS_VERSION,
     guests, layout,
     assign:{ ceremonia:cerAssign, cena:cenaAssign },
     view:"lugar",
@@ -559,6 +560,7 @@ function defaultState(){
 /*  Estado + persistencia                                             */
 /* ------------------------------------------------------------------ */
 const KEY="ordenboda-v1";
+const DEFAULTS_VERSION=2; // bump this when the published seating changes
 const AUTH_KEY="ordenboda-editor";
 const EDITOR_PIN="1445"; // <-- change this PIN to your own
 function isEditor(){ return localStorage.getItem(AUTH_KEY)==="yes"; }
@@ -572,6 +574,7 @@ function load(){
     if(!raw) return defaultState();
     const s = JSON.parse(raw);
     if(!s.guests || !s.assign) return defaultState();
+    if(!s.v || s.v<DEFAULTS_VERSION) return defaultState(); // new published seating replaces stale local copy
     s.selected=null;
     if(!s.view) s.view="lugar";
     if(!s.threeD) s.threeD={ceremonia:false,cena:false};
