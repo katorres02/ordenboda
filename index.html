@@ -514,24 +514,22 @@ function defaultState(){
 
   // Layout config
   const layout = {
-    ceremonia:{leftCols:4,leftRows:4,rightCols:2,rightRows:4},
+    ceremonia:{leftCols:5,leftRows:3,rightCols:5,rightRows:3},
     cena:{left:10,right:10,head:5}
   };
 
   // ----- Ceremonia default (según boceto de números en círculo) -----
   // Sección izquierda (4 columnas), fila por fila tal como el boceto:
   const cerLeft = [
-    "Mariel","Juan Carlos","Elizabeth","Olga",     // 4 3 2 1
-    "Elodie","Tom","Duhamel","Alika",              // 8 7 6 5
-    "Charles","Sofía","Andrés","Paola",            // 12 11 10 9
-    "","Nazanin","Vitor","Dayene"                  // Dayene junto al pasillo
+    "Olga","Juan Carlos","Elizabeth","Alika","Duhamel",   // fila 1: Olga + 2 parejas
+    "Sofía","Charles","Melissa","Yoan","Mariel",          // fila 2: 2 parejas + Mariel
+    "","","","Alejandra","Fernando"                       // fila 3: pareja junto al pasillo
   ];
-  // Sección derecha (2 columnas):
+  // Sección derecha (5 columnas):
   const cerRight = [
-    "Melissa","Yoan",       // 16 17
-    "Lennyn","Daniella",    // 18 19
-    "Alejandra","Fernando", // 22 23
-    "Estefanía","Ben"       // 20 21
+    "Tom","Elodie","Paola","Andrés","Nazanin",            // fila 1: 2 parejas + Nazanin
+    "Lennyn","Daniella","Estefanía","Ben","",             // fila 2: 2 parejas
+    "Dayene","Vitor","","",""                             // fila 3: pareja junto al pasillo
   ];
 
   const cerAssign = {};
